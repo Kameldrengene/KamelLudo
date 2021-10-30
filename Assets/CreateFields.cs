@@ -9,7 +9,7 @@ public class CreateFields : MonoBehaviour
     private float defaultX = -2.2f;
     private float defaultY = 4.33f;
     private float defaultZ = -0.52f;
-    private List<MyField> fieldList = new List<MyField>();
+    private List<MyField>[] fieldList = { new List<MyField>(), new List<MyField>(), new List<MyField>() , new List<MyField>() };
 
     enum FieldType
     {
@@ -23,6 +23,7 @@ public class CreateFields : MonoBehaviour
     {
         public GameObject field;
         public FieldType fieldType = default;
+        public MyField nextField = null;
         public MyField(GameObject field)
         {
             this.field = field;
@@ -56,13 +57,21 @@ public class CreateFields : MonoBehaviour
     private int counter = 0;
     void AnimatedMove()
     {
-        if (counter < fieldList.Count)
+        if (counter < fieldList[0].Count)
         {
-            fieldList[counter].field.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+            fieldList[counter][0].field.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
             counter++;
         }
         else
             counter = 0;
+    }
+
+    private void AssignNextFields()
+    {
+        for(int i = 0; i < fieldList[0].Count; i++)
+        {
+
+        }
     }
 
     private void MakeFields()
@@ -107,9 +116,11 @@ public class CreateFields : MonoBehaviour
                         cube.GetComponent<Renderer>().material.color = new Color32(0, 255, 0, 255);
                         field.fieldType = FieldType.DefaultField;
                     }
-                    fieldList.Add(field);
+                    //if(i )
+                    fieldList[0].Add(field);
                 }
             }            
         }
+        AssignNextFields();
     }
 }
