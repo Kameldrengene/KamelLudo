@@ -54,24 +54,21 @@ public class CreateFields : MonoBehaviour
     
         
     }
-    private int counter = 0;
     void AnimatedMove()
     {
-        if (counter < fieldList[0].Count)
-        {
-            fieldList[counter][0].field.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
-            counter++;
-        }
-        else
-            counter = 0;
+        
     }
 
     private void AssignNextFields()
     {
-        for(int i = 0; i < fieldList[0].Count; i++)
+        for (int j = 0; j < fieldList.Length;j++)
         {
+            for (int i = 0; i < fieldList[j].Count; i++)
+            {
 
+            }
         }
+        
     }
 
     private void MakeFields()
@@ -116,8 +113,7 @@ public class CreateFields : MonoBehaviour
                         cube.GetComponent<Renderer>().material.color = new Color32(0, 255, 0, 255);
                         field.fieldType = FieldType.DefaultField;
                     }
-                    //if(i )
-                    fieldList[0].Add(field);
+                    fieldList[i].Add(field);
                 }
             }            
         }
