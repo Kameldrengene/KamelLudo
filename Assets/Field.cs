@@ -8,7 +8,10 @@ public abstract class Field {
     public GameObject field = null;
     protected Field nextField = null;
     protected List<Piece> pieces = new List<Piece>();
-    
+    public Field(GameObject gameObject)
+    {
+        field = gameObject;
+    }
     public abstract void OnLand(Piece piece);
     public abstract Field NextField();
 
@@ -18,6 +21,10 @@ public abstract class Field {
 
 public class StarField : Field
 {
+    public StarField(GameObject gameObject) : base(gameObject)
+    {
+
+    }
     public override Field NextField()
     {
         if (this.nextField != null)
@@ -34,6 +41,10 @@ public class StarField : Field
 
 public class NormalField : Field
 {
+    public NormalField(GameObject gameObject) : base(gameObject)
+    {
+
+    }
     public override Field NextField()
     {
         if (this.nextField != null)
@@ -51,6 +62,11 @@ public class NormalField : Field
 
 public class GlobusField : Field
 {
+
+    public GlobusField(GameObject gameObject) : base(gameObject)
+    {
+
+    }
     public override Field NextField()
     {
         if (this.nextField != null)
@@ -68,6 +84,10 @@ public class GlobusField : Field
 
 public class SafeHomeField : Field
 {
+    public SafeHomeField(GameObject gameObject) : base(gameObject)
+    {
+
+    }
     public override Field NextField()
     {
         if (this.nextField != null)
@@ -85,6 +105,10 @@ public class SafeHomeField : Field
 
 public class HomeField : Field
 {
+    public HomeField(GameObject gameObject) : base(gameObject)
+    {
+
+    }
     public override Field NextField()
     {
         if (this.nextField != null)
@@ -102,6 +126,10 @@ public class HomeField : Field
 
 public class FinishedField : Field
 {
+    public FinishedField(GameObject gameObject) : base(gameObject)
+    {
+
+    }
     public override Field NextField()
     {
         if (this.nextField != null)
