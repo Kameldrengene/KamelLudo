@@ -9,7 +9,7 @@ public class CreateFields : MonoBehaviour
     private float defaultX = -2.2f;
     private float defaultY = 4.33f;
     private float defaultZ = -0.52f;
-    private List<MyField>[] fieldList = { new List<MyField>(), new List<MyField>(), new List<MyField>() , new List<MyField>() };
+    private List<Field>[] fieldList = { new List<Field>(), new List<Field>(), new List<Field>() , new List<Field>() };
 
     enum FieldType
     {
@@ -17,17 +17,6 @@ public class CreateFields : MonoBehaviour
         Star = 1,
         Globe = 2,
         Entrance = 3
-    }
-
-    private class MyField
-    {
-        public GameObject field;
-        public FieldType fieldType = default;
-        public MyField nextField = null;
-        public MyField(GameObject field)
-        {
-            this.field = field;
-        }
     }
 
     // Start is called before the first frame update
@@ -92,26 +81,21 @@ public class CreateFields : MonoBehaviour
                     else if(i == 3)
                         newPos = new Vector3(-pos[1], pos[0], pos[2]);
                     cube.transform.position = newPos;
-                    MyField field = new MyField(cube);
-                    if (j == 4 && k == 2)
+                    Field field = null;
+                    if ((j == 4 && k == 2) || (j == 3 && k == 0)) //Globus
                     {
+                        field = new NormalField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(255, 0, 255, 255);
-                        field.fieldType = FieldType.Globe;
                     }
-                    else if (j == 3 && k == 0)
+                    else if (j == 5 && k == 1) //Entrance
                     {
-                        cube.GetComponent<Renderer>().material.color = new Color32(255, 0, 255, 255);
-                        field.fieldType = FieldType.Globe;
-                    }
-                    else if (j == 5 && k == 1)
-                    {
+                        field = new NormalField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 255);
-                        field.fieldType = FieldType.Entrance;
                     }
-                    else
+                    else //Default
                     {
+                        field = new NormalField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(0, 255, 0, 255);
-                        field.fieldType = FieldType.DefaultField;
                     }
                     fieldList[i].Add(field);
                 }

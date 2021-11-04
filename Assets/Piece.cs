@@ -13,15 +13,17 @@ public enum PieceColor
 public abstract class Piece
 {
     protected PieceColor pieceColor;
-    protected GameObject position;
+    protected GameObject pieceObject;
     protected Player owner;
 
-    protected Piece(){}
+    protected Piece(GameObject pieceObject){
+        this.pieceObject = pieceObject;
+    }
 }
 
 public class RedPiece : Piece
 {
-    public RedPiece() : base()
+    public RedPiece(GameObject piece) : base(piece)
     {
         this.pieceColor = PieceColor.red;
     }
@@ -30,7 +32,7 @@ public class RedPiece : Piece
 
 public class BluePiece : Piece
 {
-    public BluePiece() : base()
+    public BluePiece(GameObject piece) : base(piece)
     {
         this.pieceColor = PieceColor.blue;
     }
@@ -38,7 +40,7 @@ public class BluePiece : Piece
 
 public class YellowPiece : Piece
 {
-    public YellowPiece() : base()
+    public YellowPiece(GameObject piece) : base(piece)
     {
         this.pieceColor = PieceColor.yellow;
     }
@@ -46,7 +48,7 @@ public class YellowPiece : Piece
 
 public class GreenPiece : Piece
 {
-    public GreenPiece() : base()
+    public GreenPiece(GameObject piece) : base(piece)
     {
         this.pieceColor = PieceColor.green;
     }
