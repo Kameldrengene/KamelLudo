@@ -19,6 +19,10 @@ public abstract class Piece
     protected Piece(GameObject pieceObject){
         this.pieceObject = pieceObject;
     }
+
+    public getPieceColor(){
+        return pieceColor;
+    }
 }
 
 public class RedPiece : Piece
