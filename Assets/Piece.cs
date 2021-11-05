@@ -20,7 +20,7 @@ public abstract class Piece
         this.pieceObject = pieceObject;
     }
 
-    public getPieceColor(){
+    public PieceColor getPieceColor(){
         return pieceColor;
     }
 }

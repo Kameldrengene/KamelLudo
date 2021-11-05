@@ -8,13 +8,13 @@ public abstract class Field {
     public GameObject field = null;
     protected Field nextField = null;
     protected List<Piece> pieces = new List<Piece>();
-    protected int quadrant = null;  // Must be same as pieces color system
+    protected PieceColor quadrant;  // Must be same as pieces color system
     public Field(GameObject gameObject)
     {
         field = gameObject;
     }
     public List<Piece> getPieces() { return this.pieces; }
-    public int getQuadrant() { return this.quadrant; }
+    public PieceColor getQuadrant() { return this.quadrant; }
 
     public abstract void OnLand(Piece piece);
     public abstract Field NextField();
@@ -69,7 +69,7 @@ public class StarField : Field
 
         else //2 or more pieces
         {
-            if (this.pieces[0].getPieceColor != this.piece.getPieceColor) // if the fields pieces are not the same color
+            if (this.pieces[0].getPieceColor() != piece.getPieceColor()) // if the fields pieces are not the same color
             {
                 // The moving piece is sent home
                 // TODO: add the current piece to the correct start
@@ -96,20 +96,20 @@ public class StarField : Field
                 nextStarField.getPieces().RemoveAt(0); // Remove piece and send it to start
                 // TODO: add the removed piece to the correct start
             }
-            nextStarField.getPieces().add(piece); //adds the piece to field
+            nextStarField.getPieces().Add(piece); //adds the piece to field
 
         }
 
         else //2 or more pieces
         {
-            if (nextStarField.getPieces()[0].getPieceColor != piece.getPieceColor) // if the fields pieces are not the same color
+            if (nextStarField.getPieces()[0].getPieceColor() != piece.getPieceColor()) // if the fields pieces are not the same color
             {
                 // The moving piece is sent home
                 // TODO: add the current piece to the correct start
             }
             else // The pieces are all the same color
             {
-                nextStarField.getPieces().add(piece); // adds the piece to field
+                nextStarField.getPieces().Add(piece); // adds the piece to field
             }
         }
     }
@@ -146,20 +146,20 @@ public class NormalField : Field
                 this.pieces.RemoveAt(0); // Remove piece and send it to start
                 // TODO: add the removed piece to the correct start
             }
-            this.pieces.add(piece); //adds the piece to field
+            this.pieces.Add(piece); //adds the piece to field
             
         }
 
         else //2 or more pieces
         {
-            if (this.pieces[0].getPieceColor != piece.getPieceColor) // if the fields pieces are not the same color
+            if (this.pieces[0].getPieceColor() != piece.getPieceColor()) // if the fields pieces are not the same color
             {
                 // The moving piece is sent home
                 // TODO: add the current piece to the correct start
             }
             else // The pieces are all the same color
             {
-                this.pieces.add(piece); // adds the piece to field
+                this.pieces.Add(piece); // adds the piece to field
             }
         }
 
@@ -202,7 +202,7 @@ public class GlobusField : Field
             }
             else // The pieces are all the same color
             {
-                this.pieces.add(piece); // adds the piece to field
+                this.pieces.Add(piece); // adds the piece to field
             }
         }
     }
@@ -241,7 +241,7 @@ public class SafeHomeField : Field
                 if (piece.getPieceColor() == this.quadrant)
                 {
                     // TODO: The stading piece(s) are sent home
-                    this.pieces = new List<Piece>; //set new list to clear out any pieces on the field
+                    this.pieces = new List<Piece>(); //set new list to clear out any pieces on the field
                     this.pieces.Add(piece);
                 }
                 else
@@ -252,7 +252,7 @@ public class SafeHomeField : Field
             }
             else // The pieces are all the same color
             {
-                this.pieces.add(piece); // adds the piece to field
+                this.pieces.Add(piece); // adds the piece to field
             }
         }
     }
@@ -305,7 +305,7 @@ public class EntranceField : Field //Is also a StarField. pieces of same color w
 
         else //2 or more pieces
         {
-            if (this.pieces[0].getPieceColor != this.piece.getPieceColor) // if the fields pieces are not the same color
+            if (this.pieces[0].getPieceColor() != piece.getPieceColor()) // if the fields pieces are not the same color
             {
                 // The moving piece is sent home
                 // TODO: add the current piece to the correct start
@@ -320,7 +320,7 @@ public class EntranceField : Field //Is also a StarField. pieces of same color w
 
     private void handleJump(Piece piece, Field nextStarField)
     {
-        if (piece.getPieceColor == this.quadrant) //Should not jump
+        if (piece.getPieceColor() == this.quadrant) //Should not jump
         {
             this.pieces.Add(piece); // Adds the piece to the current field instead
         }
@@ -337,20 +337,20 @@ public class EntranceField : Field //Is also a StarField. pieces of same color w
                 nextStarField.getPieces().RemoveAt(0); // Remove piece and send it to start
                 // TODO: add the removed piece to the correct start
             }
-            nextStarField.getPieces().add(piece); //adds the piece to field
+            nextStarField.getPieces().Add(piece); //adds the piece to field
 
         }
 
         else //2 or more pieces
         {
-            if (nextStarField.getPieces()[0].getPieceColor != piece.getPieceColor) // if the fields pieces are not the same color
+            if (nextStarField.getPieces()[0].getPieceColor() != piece.getPieceColor()) // if the fields pieces are not the same color
             {
                 // The moving piece is sent home
                 // TODO: add the current piece to the correct start
             }
             else // The pieces are all the same color
             {
-                nextStarField.getPieces().add(piece); // adds the piece to field
+                nextStarField.getPieces().Add(piece); // adds the piece to field
             }
         }
     }
