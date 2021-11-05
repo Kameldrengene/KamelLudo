@@ -11,7 +11,7 @@ public class CreatePieces : MonoBehaviour
     private float defaultY = 7.719f;
     private float defaultZ = -1.29f;
     private float midStartY = 9.77f;
-    private List<Piece>[] pieces = { new List<Piece>(), new List<Piece>(), new List<Piece>(), new List<Piece>() };
+    public List<Piece>[] pieces = { new List<Piece>(), new List<Piece>(), new List<Piece>(), new List<Piece>() };
     // Start is called before the first frame update
     void Start()
     {

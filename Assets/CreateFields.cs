@@ -9,7 +9,7 @@ public class CreateFields : MonoBehaviour
     private float defaultX = -2.2f;
     private float defaultY = 4.33f;
     private float defaultZ = -0.52f;
-    private List<Field>[] fieldList = { new List<Field>(), new List<Field>(), new List<Field>() , new List<Field>() };
+    public List<Field>[] fieldList = { new List<Field>(), new List<Field>(), new List<Field>() , new List<Field>() };
 
     enum FieldType
     {
