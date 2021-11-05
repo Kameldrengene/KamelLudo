@@ -84,12 +84,17 @@ public class CreateFields : MonoBehaviour
                     Field field = null;
                     if ((j == 4 && k == 2) || (j == 3 && k == 0)) //Globus
                     {
-                        field = new NormalField(cube);
+                        field = new GlobusField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(255, 0, 255, 255);
                     }
                     else if (j == 5 && k == 1) //Entrance
                     {
                         field = new NormalField(cube);
+                        cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 255);
+                    }
+                    else if (j == 0 && k == 0)
+                    {
+                        field = new StarField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 255);
                     }
                     else //Default
