@@ -89,7 +89,7 @@ public class CreateFields : MonoBehaviour
                     fieldList[i][j].nextField=fieldList[i][17];
                 } else if(j == 6)
                 {
-                    fieldList[i][j].nextField=new 
+                    fieldList[i][j].nextField = null;
                 }
             }
         }
