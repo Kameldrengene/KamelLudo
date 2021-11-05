@@ -8,7 +8,7 @@ public abstract class Field {
     public GameObject field = null;
     protected Field nextField = null;
     protected List<Piece> pieces = new List<Piece>();
-    protected int quadrant = null;  // Must be same as pieces color system
+    protected int quadrant = -1;  // Must be same as pieces color system
     public Field(GameObject gameObject)
     {
         field = gameObject;
@@ -69,7 +69,7 @@ public class StarField : Field
 
         else //2 or more pieces
         {
-            if (this.pieces[0].getPieceColor != this.piece.getPieceColor) // if the fields pieces are not the same color
+            if (this.pieces[0].getPieceColor != this.piece.getPieceColor()) // if the fields pieces are not the same color
             {
                 // The moving piece is sent home
                 // TODO: add the current piece to the correct start
