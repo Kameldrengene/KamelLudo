@@ -70,6 +70,7 @@ public class CreatePieces : MonoBehaviour
                     newPiece = new RedPiece(cylinder);
 
                 }
+                pieces[i].Add(newPiece);
 
             }
         }
