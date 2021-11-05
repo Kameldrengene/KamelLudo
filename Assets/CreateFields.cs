@@ -9,7 +9,18 @@ public class CreateFields : MonoBehaviour
     private float defaultX = -2.2f;
     private float defaultY = 4.33f;
     private float defaultZ = -0.52f;
-    public List<Field>[] fieldList = { new List<Field>(), new List<Field>(), new List<Field>() , new List<Field>() };
+    private List<Field>[] fieldList = { new List<Field>(), new List<Field>(), new List<Field>() , new List<Field>() };
+    private List<Field>[] dasdasd;
+
+    public Field getStart(PieceColor pieceColor)
+    {
+        return fieldList[(int)pieceColor][16];
+    }
+
+    public Field getBank(PieceColor pieceColor)
+    {
+        return fieldList[(int)pieceColor][10];
+    }
 
     enum FieldType
     {
@@ -23,38 +34,63 @@ public class CreateFields : MonoBehaviour
     void Start()
     {
         MakeFields();
-       
-
+        Debug.Log(fieldList[0].Count);
+        //AnimatedMove();
     }
 
-    private int nextUpdate = 1;
+    //private int nextUpdate = 1;
     
     // Update is called once per frame
     void Update()
     {
-        if (Time.time >= nextUpdate)
-        {
-            Debug.Log(Time.time + ">=" + nextUpdate);
+        /*if (Time.time >= nextUpdate)
+        {*/
+            //Debug.Log(Time.time + ">=" + nextUpdate);
             // Change the next update (current second+1)
-            nextUpdate = Mathf.FloorToInt(Time.time) + 1;
+            //nextUpdate = Mathf.FloorToInt(Time.time) + 1;
             // Call your fonction
-            AnimatedMove();
-        }
-    
-        
+       AnimatedMove();
+
+        //}
+
+
     }
     void AnimatedMove()
     {
-        
+        Debug.Log("Length " + fieldList.Length);
+        for(int i = 0; i < fieldList.Length; i++)
+        {
+            Debug.Log("I length " + fieldList[i].Count);
+            for(int j = 0; j < fieldList[i].Count; j++)
+            {
+                if (fieldList[i][j].NextField(null) != null)
+                {
+                    Debug.Log(i+" "+j);
+                    fieldList[i][j].NextField(null).field.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+                }
+            }
+        }
     }
 
     private void AssignNextFields()
     {
-        for (int j = 0; j < fieldList.Length;j++)
+        for (int i = 0; i < fieldList.Length;i++)
         {
-            for (int i = 0; i < fieldList[j].Count; i++)
+            for (int j = 0; j < fieldList[i].Count; j++)
             {
-
+                if(j < 5)
+                {
+                    fieldList[i][j].nextField=fieldList[i][j + 1];
+                } else if(j == 5)
+                {
+                    fieldList[i][j].nextField=fieldList[i][11];
+                } else if(j == 11)
+                {
+                    fieldList[i][j].nextField=fieldList[i][17];
+                } else if(j == 6)
+                {
+                    fieldList[i][j].nextField=new 
+                }
             }
         }
         
@@ -65,9 +101,9 @@ public class CreateFields : MonoBehaviour
         
         for (int i = 0; i < 4; i++)
         {
-            for (int j = 0; j < 6; j++)
+            for (int k = 0; k < 3; k++)
             {
-                for (int k = 0; k < 3; k++)
+                for (int j = 0; j < 6; j++)
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cube.transform.localScale = defaultSize;
@@ -82,17 +118,22 @@ public class CreateFields : MonoBehaviour
                         newPos = new Vector3(-pos[1], pos[0], pos[2]);
                     cube.transform.position = newPos;
                     Field field = null;
-                    if ((j == 4 && k == 2) || (j == 3 && k == 0)) //Globus
+                    if (j == 3 && k == 0) //Globus
                     {
                         field = new GlobusField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(255, 0, 255, 255);
                     }
+                    else if (j == 4 && k == 2)//Globus and field
+                    {
+                        field = new SafeHomeField(cube);
+                        cube.GetComponent<Renderer>().material.color = new Color32(255, 100, 255, 255);
+                    }
                     else if (j == 5 && k == 1) //Entrance
                     {
-                        field = new NormalField(cube);
+                        field = new EntranceField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 255);
                     }
-                    else if (j == 0 && k == 0)
+                    else if (j == 0 && k == 0) //Star
                     {
                         field = new StarField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 255);

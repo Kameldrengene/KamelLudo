@@ -5,8 +5,8 @@ using UnityEngine;
 
 
 public abstract class Field {
-    public GameObject field = null;
-    protected Field nextField = null;
+    public GameObject field { get; set; }
+    public Field nextField { get; set; }
     protected List<Piece> pieces = new List<Piece>();
     protected PieceColor quadrant;  // Must be same as pieces color system
     public Field(GameObject gameObject)
@@ -15,9 +15,8 @@ public abstract class Field {
     }
     public List<Piece> getPieces() { return this.pieces; }
     public PieceColor getQuadrant() { return this.quadrant; }
-
     public abstract void OnLand(Piece piece);
-    public abstract Field NextField();
+    public abstract Field NextField(Piece piece);
 
 
 }
@@ -29,7 +28,7 @@ public class StarField : Field
     {
 
     }
-    public override Field NextField()
+    public override Field NextField(Piece piece)
     {
         if (this.nextField != null)
             return this.nextField;
@@ -46,7 +45,7 @@ public class StarField : Field
         Field nextStarField = this.nextField;
         while (!(nextStarField is StarField || nextStarField is EntranceField))
         {
-            nextStarField = nextStarField.NextField();
+            nextStarField = nextStarField.NextField(piece);
         }
 
         if (this.pieces.Count == 0) //no pieces yet
@@ -121,12 +120,12 @@ public class NormalField : Field
     {
 
     }
-    public override Field NextField()
+    public override Field NextField(Piece piece)
     {
         if (this.nextField != null)
             return this.nextField;
-        else   
-            throw new NotImplementedException();
+        else
+            return null;
      
     }
 
@@ -174,12 +173,12 @@ public class GlobusField : Field
     {
 
     }
-    public override Field NextField()
+    public override Field NextField(Piece piece)
     {
         if (this.nextField != null)
             return this.nextField;
         else
-            throw new NotImplementedException();
+            return null;
 
     }
 
@@ -214,12 +213,12 @@ public class SafeHomeField : Field
     {
 
     }
-    public override Field NextField()
+    public override Field NextField(Piece piece)
     {
         if (this.nextField != null)
             return this.nextField;
         else
-            throw new NotImplementedException();
+            return null;
 
     }
 
@@ -264,12 +263,12 @@ public class EntranceField : Field //Is also a StarField. pieces of same color w
     {
 
     }
-    public override Field NextField() //Should have piece passed? how will it know to send the correct pieces to finish spaces?
+    public override Field NextField(Piece piece) //Should have piece passed? how will it know to send the correct pieces to finish spaces?
     {
         if (this.nextField != null)
             return this.nextField;
         else
-            throw new NotImplementedException();
+            return null;
 
     }
 
@@ -282,7 +281,7 @@ public class EntranceField : Field //Is also a StarField. pieces of same color w
         Field nextStarField = this.nextField;
         while (!(nextStarField is StarField || nextStarField is EntranceField))
         {
-            nextStarField = nextStarField.NextField();
+            nextStarField = nextStarField.NextField(piece);
         }
 
         if (this.pieces.Count == 0) //no pieces yet
@@ -362,12 +361,12 @@ public class HomeField : Field //Not a real field
     {
 
     }
-    public override Field NextField()
+    public override Field NextField(Piece piece)
     {
         if (this.nextField != null)
             return this.nextField;
         else
-            throw new NotImplementedException();
+            return null;
 
     }
 
@@ -383,12 +382,12 @@ public class FinishedField : Field // Not a real field?
     {
 
     }
-    public override Field NextField()
+    public override Field NextField(Piece piece)
     {
         if (this.nextField != null)
             return this.nextField;
         else
-            throw new NotImplementedException();
+            return null;
 
     }
 
