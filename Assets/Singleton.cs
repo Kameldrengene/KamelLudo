@@ -32,7 +32,14 @@ public class Singleton
     }
     public void EstablishConnection(string url)
     {
-        _connection = new HubConnectionBuilder().WithUrl(url).Build();
+        try
+        {
+            _connection = new HubConnectionBuilder().WithUrl(url).Build();
+        }catch (System.Exception ex)
+        {
+            Debug.Log(ex);
+            this.Connected = false;
+        }
     }
 
     public bool Connected
