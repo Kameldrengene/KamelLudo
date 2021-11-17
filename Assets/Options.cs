@@ -42,6 +42,10 @@ public class Options : MonoBehaviour
         }
         playButton.interactable = false;
         playNextButton.interactable = false;
+        if(!(ip.Contains("http://") || ip.Contains("https://")))
+        {
+            ip = "http://" + ip;
+        }
         Singleton.Instance.EstablishConnection(ip+ "/lobbyhub");
         Debug.Log(ip);
 
