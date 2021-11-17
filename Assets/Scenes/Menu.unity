@@ -4894,7 +4894,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 622675cbff239b146833ffefc8d5cf3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 
+  ipInfo: {fileID: 349349610}
+  ip: http://localhost:5000/lobbyhub
+  playButton: {fileID: 619204918}
+  playNextButton: {fileID: 1000138380}
 --- !u!1 &1034858511
 GameObject:
   m_ObjectHideFlags: 0
