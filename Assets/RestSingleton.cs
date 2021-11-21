@@ -9,9 +9,15 @@ public class RestSingleton
     private static RestSingleton instance = null;
     public bool _isLoggedIn = false;
     public string token = null;
+    
     RestSingleton()
     {
         
+    }
+
+    private string getJson(string username, string password)
+    {
+        return "{" + "\n" + "\"name\"" + ":" + "\"" + username + "\"" + "," + "\n" + "\"password\"" + ":" + "\"" + password + "\"" + "\n" + "}";
     }
 
     public static RestSingleton Instance
@@ -58,5 +64,35 @@ public class RestSingleton
             }
         }
 
+    }
+
+    public IEnumerator PostRegisterData(string url, LoginPlayer player, System.Action<string,long> callBack)
+    {
+        string jsonPlayer = getJson(player.username, player.password);
+        using (UnityWebRequest www = UnityWebRequest.Post(url, jsonPlayer))
+        {
+            www.SetRequestHeader("content-type", "application/json");
+            www.uploadHandler.contentType = "application/json";
+            www.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(jsonPlayer));
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log(www.error);
+                callBack(www.error, www.responseCode);
+            }
+            else
+            {
+                if (www.isDone)
+                {
+                    Debug.Log(www.result.ToString());
+                    long code = www.responseCode;
+                    string result = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
+                    //string token = JsonUtility.FromJson(result);                    
+                    Debug.Log("code: " + code);
+                    callBack(result, code);
+                }
+            }
+        }
     }
 }
