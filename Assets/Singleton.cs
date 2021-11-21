@@ -9,7 +9,7 @@ public class Singleton
     private static Singleton instance = null;
     private HubConnection _connection;
     private bool _connected;
-    private string _token;
+    private string _token = null;
 
     Singleton() { _connected = false; }
 

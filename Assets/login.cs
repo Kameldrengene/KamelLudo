@@ -9,6 +9,7 @@ public class login : MonoBehaviour
     private string _username;
     private string _password;
     public Text connectText;
+    public GameObject playermenu;
     private string URL = "http://localhost:5000/api/player/authenticate";
     // Start is called before the first frame update
     void Start()
@@ -21,7 +22,11 @@ public class login : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Singleton.Instance.Token!=null)
+        {
+            this.gameObject.SetActive(false);   
+            playermenu.SetActive(true);
+        }
     }
 
     void GetToken(string response, long statusCode)

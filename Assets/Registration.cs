@@ -8,6 +8,8 @@ public class Registration : MonoBehaviour
     public string UserName { get; set; }
     public string Password { get; set; }
 
+    public GameObject playermenu;
+
     public Text connectText;
     private string URL = "http://localhost:5000/api/player";
     // Start is called before the first frame update
@@ -21,7 +23,11 @@ public class Registration : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Singleton.Instance.Token != null)
+        {
+            this.gameObject.SetActive(false);
+            playermenu.SetActive(true);
+        }
     }
 
     public void usernameInput(string input)
