@@ -9,6 +9,7 @@ public class Singleton
     private static Singleton instance = null;
     private HubConnection _connection;
     private bool _connected;
+    private string _token;
 
     Singleton() { _connected = false; }
 
@@ -32,7 +33,20 @@ public class Singleton
     }
     public void EstablishConnection(string url)
     {
-        _connection = new HubConnectionBuilder().WithUrl(url).Build();
+        try
+        {
+            _connection = new HubConnectionBuilder().WithUrl(url).Build();
+        }catch (System.Exception ex)
+        {
+            Debug.Log(ex);
+            this.Connected = false;
+        }
+    }
+
+    public string Token
+    {
+        get { return this._token; }
+        set { this._token = value; }
     }
 
     public bool Connected

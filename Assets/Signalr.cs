@@ -11,9 +11,7 @@ public class Signalr : MonoBehaviour
     void Start()
     {
         Debug.Log("Hello World!");
-        
-
-        Singleton.Instance.EstablishConnection("http://localhost:5000/lobbyHub");
+        Singleton.Instance.EstablishConnection(Options.Instance.ip+ "/lobbyhub");
 
         Singleton.Instance.Connection.On<string>("Connected", (connetionid) =>
         {
@@ -23,6 +21,7 @@ public class Signalr : MonoBehaviour
       
         Connect();
     }
+
 
     private async void Connect()
     {
