@@ -89,7 +89,7 @@ public class CreateFields : MonoBehaviour
                     }
                     else if (j == 5 && k == 1) //Entrance
                     {
-                        field = new NormalField(cube);
+                        field = new EntranceField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 255);
                     }
                     else if (j == 0 && k == 0)
