@@ -5,13 +5,11 @@ using System;
 
 public class CreatePieces : MonoBehaviour
 {
-
-    private Vector3 defaultSize = new Vector3(2.1f, 2.1f, 0.1f);
     private float defaultX = -9.844f;
     private float defaultY = 7.719f;
     private float defaultZ = -1.29f;
     private float midStartY = 9.77f;
-    private List<Piece>[] pieces = { new List<Piece>(), new List<Piece>(), new List<Piece>(), new List<Piece>() };
+    public List<Piece> pieces = Board.pieces;
     // Start is called before the first frame update
     void Start()
     {
@@ -70,7 +68,7 @@ public class CreatePieces : MonoBehaviour
                     newPiece = new RedPiece(cylinder);
 
                 }
-                pieces[i].Add(newPiece);
+                pieces.Add(newPiece);
 
             }
         }

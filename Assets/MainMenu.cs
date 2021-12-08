@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
 {
     public Button playButton;
     public Button playNextButton;
+    public Button playOptionButton;
     private void Start()
     {
         //playButton.interactable = false;

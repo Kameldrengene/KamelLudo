@@ -13,7 +13,8 @@ public enum PieceColor
 public abstract class Piece
 {
     protected PieceColor pieceColor;
-    protected GameObject pieceObject;
+    public GameObject pieceObject { get; set; }
+    public Field  field{ get; set; }
     protected Player owner;
 
     protected Piece(GameObject pieceObject){
