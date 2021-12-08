@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,9 @@ public class Registration : MonoBehaviour
 {
     public string UserName { get; set; }
     public string Password { get; set; }
+
+    public TMP_InputField createplayerEmail;
+    public TMP_InputField createplayerPassword;
 
     public GameObject playermenu;
 
@@ -61,6 +65,8 @@ public class Registration : MonoBehaviour
 
     public void onRegisterClick()
     {
+        UserName = createplayerEmail.text;
+        Password = createplayerPassword.text;
         StartCoroutine(RestSingleton.Instance.PostRegisterData(URL, new LoginPlayer(UserName, Password), GetToken));
     }
 

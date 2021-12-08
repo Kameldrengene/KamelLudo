@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,14 +9,16 @@ public class login : MonoBehaviour
 {
     private string _username;
     private string _password;
-    public Text connectText;
+    public TMP_InputField playerEmail;
+    public TMP_InputField playerPassword;
+    //public Text connectText;
     public GameObject playermenu;
     private string URL = "http://localhost:5000/api/player/authenticate";
     // Start is called before the first frame update
     void Start()
     {
-        connectText = GameObject.Find("connectText").GetComponent<Text>();
-        connectText.text = "";
+        //connectText = GameObject.Find("connectText").GetComponent<Text>();
+        //connectText.text = "";
         //StartCoroutine(RestSingleton.Instance.PostLoginData(URL, new LoginPlayer("butt", "1234"), GetToken));
     }
 
@@ -27,6 +30,8 @@ public class login : MonoBehaviour
             this.gameObject.SetActive(false);   
             playermenu.SetActive(true);
         }
+        //Debug.Log("value:" + playerEmail.text);
+        //Debug.Log("value:" + playerPassword.text);
     }
 
     void GetToken(string response, long statusCode)
@@ -35,32 +40,38 @@ public class login : MonoBehaviour
         //connectText.text = token;
         if (statusCode == 200) 
         { 
-            connectText.text = "connection success";
+            //connectText.text = "connection success";
             RestSingleton.Instance._isLoggedIn = true;
             RestSingleton.Instance.token = response;
             Singleton.Instance.Token = response;
             Debug.Log("response :" + response);
             Debug.Log("code :" + statusCode);
         }
-        else if (statusCode != 200) { connectText.text = response; }
+        else if (statusCode != 200) {
+            Debug.Log("response: " + response);
+            /* connectText.text = response;*/ 
+        }
         
     }
 
-    public void usernameInput(string input)
+    public void usernameInput()
     {
-        _username = input;
-        Debug.Log("username : "+ input);
+        _username = playerEmail.text;
+        Debug.Log("username : "+ _username);
     }
 
-    public void passwordInput(string input)
+    public void passwordInput()
     {
-        _password = input;
-        Debug.Log("password : " + input);
+        _password = playerPassword.text;
+        Debug.Log("password : " + _password);
     }
 
     public void onLoginClick()
     {
+        _username = playerEmail.text;
+        _password = playerPassword.text;
         StartCoroutine(RestSingleton.Instance.PostLoginData(URL, new LoginPlayer(_username, _password), GetToken));
     }
 
 }
+    

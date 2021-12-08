@@ -10,17 +10,17 @@ public class MainMenu : MonoBehaviour
     public Button playNextButton;
     private void Start()
     {
-        playButton.interactable = false;
-        playNextButton.interactable = false;
+        //playButton.interactable = false;
+        //playNextButton.interactable = false;
     }
 
     private void Update()
     {
-        if (Singleton.Instance.Connected)
-        {
-            playButton.interactable = true;
-            playNextButton.interactable = true;
-        }
+        //if (Singleton.Instance.Connected)
+        //{
+        //    playButton.interactable = true;
+        //    playNextButton.interactable = true;
+        //}
     }
     public void PlayGame()
     {
