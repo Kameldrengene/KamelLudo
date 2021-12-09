@@ -13,7 +13,7 @@ public class login : MonoBehaviour
     public TMP_InputField playerPassword;
     public Text connectText;
     public GameObject playermenu;
-    private string URL = "http://localhost:5000/api/player/authenticate";
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -74,6 +74,7 @@ public class login : MonoBehaviour
     {
         _username = playerEmail.text;
         _password = playerPassword.text;
+        string URL = SignalR.Instance.ConnectionString + "/api/player/authenticate";
         StartCoroutine(RestSingleton.Instance.PostLoginData(URL, new LoginPlayer(_username, _password), GetToken));
     }
 

@@ -15,7 +15,6 @@ public class Registration : MonoBehaviour
     public GameObject playermenu;
 
     public Text connectText;
-    private string URL = SignalR.Instance.ConnectionString + "/api/player";
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +66,7 @@ public class Registration : MonoBehaviour
     {
         UserName = createplayerEmail.text;
         Password = createplayerPassword.text;
+        string URL = SignalR.Instance.ConnectionString + "/api/player";
         StartCoroutine(RestSingleton.Instance.PostRegisterData(URL, new LoginPlayer(UserName, Password), GetToken));
     }
 
