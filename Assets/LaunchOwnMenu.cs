@@ -45,6 +45,7 @@ public class LaunchOwnMenu : MonoBehaviour
 
     public async void deleteGame()
     {
+        Debug.Log("deleting game" + gameId);
         await SignalR.Instance.Connection.InvokeAsync("deleteGame", gameId);
     }
 }

@@ -108,12 +108,12 @@ public class GameList : MonoBehaviour
 
     }
 
-    public async void onJoinClick(GameData gamedata)
+    public  void onJoinClick(GameData gamedata)
     {
         Debug.Log("clicked name: " + gamedata.GameName + " id:" + gamedata.Id );
         if (SignalR.Instance.Connected)
         {
-            await SignalR.Instance.Connection.InvokeAsync("CreateLobby", Self.Instance.Name);
+           // await SignalR.Instance.Connection.InvokeAsync("CreateLobby", Self.Instance.Name);
         }
     }
 }
