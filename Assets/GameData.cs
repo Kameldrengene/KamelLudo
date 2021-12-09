@@ -23,6 +23,7 @@ public class GameData
         _participants = participants;
     }
 
+
     public string GameName
     {
         get { return _gameName; }
