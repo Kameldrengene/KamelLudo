@@ -9,8 +9,21 @@ public class CreateFields : MonoBehaviour
     private float defaultX = -2.2f;
     private float defaultY = 4.33f;
     private float defaultZ = -0.52f;
-    private List<Field>[] fieldList = { new List<Field>(), new List<Field>(), new List<Field>() , new List<Field>() };
+    private List<Field>[] fieldList = Board.fieldList;
     private List<Field>[] dasdasd;
+    private static CreateFields instance;
+
+    public static CreateFields Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new CreateFields();
+            }
+            return instance;
+        }
+    }
 
     public Field getStart(PieceColor pieceColor)
     {

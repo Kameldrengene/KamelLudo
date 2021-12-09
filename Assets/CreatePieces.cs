@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.EventSystems;
 
 public class CreatePieces : MonoBehaviour
 {
@@ -14,15 +15,19 @@ public class CreatePieces : MonoBehaviour
     void Start()
     {
         MakePieces();
+
     }
+
 
     // Update is called once per frame
 
 
     void Update()
     {
-        
+
     }
+
+    
 
     private void MakePieces()
     {
