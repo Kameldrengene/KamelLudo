@@ -1279,7 +1279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &83494596
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1805,7 +1805,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &218181801
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11273,6 +11273,7 @@ GameObject:
   - component: {fileID: 1392160225}
   - component: {fileID: 1392160226}
   - component: {fileID: 1392160227}
+  - component: {fileID: 1392160228}
   m_Layer: 5
   m_Name: login
   m_TagString: Untagged
@@ -11332,6 +11333,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 583f798f862d3484fa30aa0c731b2d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1392160228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392160224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac5f217e6a404624dbdb87c56ea71ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1440493697

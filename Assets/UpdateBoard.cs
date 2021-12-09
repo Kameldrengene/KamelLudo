@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,10 +28,19 @@ public class UpdateBoard : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    async void Start()
     {
-        
+        await SignalRGame.Instance.Connection.InvokeAsync("GetGame", SignalRGame.Instance.Gameid);
+        Debug.Log(SignalRGame.Instance.Gameid);
         Debug.Log("START LOADED!!!!");
+        SignalRGame.Instance.Connection.On<GameData>("GetGame", (game) =>
+        {
+            Debug.Log(game.GameName);
+            Debug.Log(game.Id);
+            
+
+
+        });
     } 
 
     // Update is called once per frame
