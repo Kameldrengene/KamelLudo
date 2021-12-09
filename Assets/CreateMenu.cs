@@ -12,9 +12,9 @@ public class CreateMenu : MonoBehaviour
     public async void CreateGameAsync()
     {
 
-        if (Singleton.Instance.Connected)
+        if (SignalR.Instance.Connected)
         {
-            await Singleton.Instance.Connection.InvokeAsync("CreateLobby", Self.Instance.Name, gameName.text);
+            await SignalR.Instance.Connection.InvokeAsync("CreateLobby", Self.Instance.Name, gameName.text);
         }
         
     }
