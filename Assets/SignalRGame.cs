@@ -12,6 +12,7 @@ public class SignalRGame
     private bool _connected;
     private string _token = null;
     private string _connectionString = "http://localhost:5000";
+    private string _gameid = null;
 
     SignalRGame() { _connected = false; }
 
@@ -63,5 +64,10 @@ public class SignalRGame
     {
         get { return this._connectionString; }
         set { this._connectionString = value; }
+    }
+    public string Gameid
+    {
+        get { return this._gameid; }
+        set { this._gameid = value; }
     }
 }

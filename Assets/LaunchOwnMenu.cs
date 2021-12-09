@@ -39,6 +39,8 @@ public class LaunchOwnMenu : MonoBehaviour
     public void launchGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SignalRGame.Instance.Gameid = gameId;
+       
     }
 
     public async void deleteGame()

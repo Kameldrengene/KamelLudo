@@ -62,7 +62,7 @@ public class CreateFields : MonoBehaviour
             // Change the next update (current second+1)
             //nextUpdate = Mathf.FloorToInt(Time.time) + 1;
             // Call your fonction
-       AnimatedMove();
+      // AnimatedMove();
 
         //}
 
