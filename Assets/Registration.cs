@@ -59,7 +59,7 @@ public class Registration : MonoBehaviour
             Debug.Log("response :" + response);
             Debug.Log("code :" + statusCode);
         }
-        else if (statusCode != 201) { connectText.text = response; }
+        else if (statusCode != 201) { connectText.text = "wrong credential"; }
 
     }
 

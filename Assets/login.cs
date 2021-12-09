@@ -11,14 +11,14 @@ public class login : MonoBehaviour
     private string _password;
     public TMP_InputField playerEmail;
     public TMP_InputField playerPassword;
-    //public Text connectText;
+    public Text connectText;
     public GameObject playermenu;
     private string URL = "http://localhost:5000/api/player/authenticate";
     // Start is called before the first frame update
     void Start()
     {
-        //connectText = GameObject.Find("connectText").GetComponent<Text>();
-        //connectText.text = "";
+        connectText = GameObject.Find("connectText").GetComponent<Text>();
+        connectText.text = "";
         //StartCoroutine(RestSingleton.Instance.PostLoginData(URL, new LoginPlayer("butt", "1234"), GetToken));
     }
 
@@ -39,17 +39,21 @@ public class login : MonoBehaviour
 
         //connectText.text = token;
         if (statusCode == 200) 
-        { 
-            //connectText.text = "connection success";
+        {
+            connectText.text = "connection success";
             RestSingleton.Instance._isLoggedIn = true;
             RestSingleton.Instance.token = response;
             Singleton.Instance.Token = response;
             Debug.Log("response :" + response);
             Debug.Log("code :" + statusCode);
         }
-        else if (statusCode != 200) {
+        else if (statusCode == 401) {
             Debug.Log("response: " + response);
-            /* connectText.text = response;*/ 
+            connectText.text = response;
+        }
+        else
+        {
+            connectText.text = "Unable to connect, service down";
         }
         
     }
