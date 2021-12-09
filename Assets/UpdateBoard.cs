@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,21 +29,33 @@ public class UpdateBoard : MonoBehaviour
             piecesAlive[0] -= 1;
         else
             piecesAlive[0] += 4;*/
-        UpdatePieces();
+        UpdateDeadPieces();
         StartCoroutine(UpdatePiecesFrame());
     }
 
     public void onBlueClick()
     {
+        //UpdateDeadPieces();
+        UpdatePiecesPosition();
+    }
+
+
+    private void UpdatePiecesPosition()
+    {
+        //foreach(Piece p in pieces)
+        //{
+            pieces[0].field = CreateFields.Instance.getStart(pieces[0].getPieceColor());
+            Vector3 pos = pieces[0].field.field.transform.position;
+            pieces[0].pieceObject.transform.position = new Vector3(pos[0],pos[1], pieces[0].pieceObject.transform.position[2]);
+        //}
+    }
+
+    private void UpdateDeadPieces()
+    {
         if (piecesAlive[0] > 0)
             piecesAlive[0] -= 1;
         else
             piecesAlive[0] += 4;
-        UpdatePieces();
-    }
-
-    private void UpdatePieces()
-    {
         int blue = piecesAlive[0], yellow = piecesAlive[1], green = piecesAlive[2], red = piecesAlive[3];
         foreach (Piece p in pieces)
         {
