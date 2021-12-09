@@ -9,7 +9,8 @@ public class UpdateBoard : MonoBehaviour
 
     private List<int> piecesAlive = new List<int> { 4, 4, 4, 4 };
     public List<Piece> pieces = Board.pieces;
-    public List<Vector3> pVector = new List<Vector3>();
+    private List<Vector3> pVector = new List<Vector3>();
+    private SignalRGame signalRGame = SignalRGame.Instance;
 
     private List<Vector3> getAllPos()
     {
@@ -29,7 +30,9 @@ public class UpdateBoard : MonoBehaviour
     void Start()
     {
         
-    }
+        Debug.Log("START LOADED!!!!");
+    } 
+
     // Update is called once per frame
     void Update()
     {
@@ -51,6 +54,7 @@ public class UpdateBoard : MonoBehaviour
     {
         //UpdateDeadPieces();
         pVector = getAllPos();
+
         UpdatePiecesPosition();
     }
 

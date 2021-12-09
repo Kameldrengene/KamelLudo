@@ -27,6 +27,7 @@ public class Options : MonoBehaviour
         }
         */
         SignalR.Instance.ConnectionString = ip;
+        SignalRGame.Instance.ConnectionString = ip;
      
     }
 
