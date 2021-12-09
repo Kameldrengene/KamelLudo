@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class UpdateBoard : MonoBehaviour
@@ -11,7 +12,6 @@ public class UpdateBoard : MonoBehaviour
     private List<int> piecesAlive = new List<int> { 4, 4, 4, 4 };
     public List<Piece> pieces = Board.pieces;
     private List<Vector3> pVector = new List<Vector3>();
-    private SignalRGame signalRGame = SignalRGame.Instance;
 
     private List<Vector3> getAllPos()
     {
@@ -30,18 +30,19 @@ public class UpdateBoard : MonoBehaviour
     // Start is called before the first frame update
     async void Start()
     {
+        SignalRGame.Instance.Connection.On<GameData>("GetGame", (game) =>
+        {
+            Debug.Log("Game name: " + game.GameName);
+            Debug.Log("Game ID: " + game.Id);
+        });
         await SignalRGame.Instance.Connection.InvokeAsync("GetGame", SignalRGame.Instance.Gameid);
         Debug.Log(SignalRGame.Instance.Gameid);
         Debug.Log("START LOADED!!!!");
-        SignalRGame.Instance.Connection.On<GameData>("GetGame", (game) =>
-        {
-            Debug.Log(game.GameName);
-            Debug.Log(game.Id);
-            
+        Debug.Log("SignalR Game Connected: " + SignalRGame.Instance.Connected);
+        
+        Debug.Log("Game loaded");
 
-
-        });
-    } 
+    }
 
     // Update is called once per frame
     void Update()
@@ -60,11 +61,11 @@ public class UpdateBoard : MonoBehaviour
         StartCoroutine(UpdatePiecesFrame());
     }
 
+
     public void onBlueClick()
     {
         //UpdateDeadPieces();
         pVector = getAllPos();
-
         UpdatePiecesPosition();
     }
 
