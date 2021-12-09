@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UpdateBoard : MonoBehaviour
@@ -12,10 +13,8 @@ public class UpdateBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       //StartCoroutine(UpdatePiecesFrame());
-
+        
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -39,15 +38,28 @@ public class UpdateBoard : MonoBehaviour
         UpdatePiecesPosition();
     }
 
-
+    private int tick = 0;
+    private Vector3 temp;
     private void UpdatePiecesPosition()
     {
-        //foreach(Piece p in pieces)
-        //{
+        if (tick == 0)
+        {
             pieces[0].field = CreateFields.Instance.getStart(pieces[0].getPieceColor());
             Vector3 pos = pieces[0].field.field.transform.position;
-            pieces[0].pieceObject.transform.position = new Vector3(pos[0],pos[1], pieces[0].pieceObject.transform.position[2]);
-        //}
+            Vector3 pos2 = pieces[0].pieceObject.transform.position;
+            temp = new Vector3(pos2[0], pos2[1], pos2[2]);
+            pieces[0].pieceObject.transform.position = new Vector3(pos[0], pos[1], pieces[0].pieceObject.transform.position[2]);
+            tick++;
+            Debug.Log("pos: " + pos);
+        }
+        else
+        {
+            Debug.Log("Piece location updated");
+            pieces[0].pieceObject.transform.position = temp;
+            tick = 0;
+        }
+        Debug.Log("pos T: " + temp);
+
     }
 
     private void UpdateDeadPieces()
