@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.EventSystems;
 
 public class CreatePieces : MonoBehaviour
 {
@@ -10,15 +11,13 @@ public class CreatePieces : MonoBehaviour
     private float defaultZ = -1.29f;
     private float midStartY = 9.77f;
     public List<Piece> pieces = Board.pieces;
-    private List<int> piecesAlive = new List<int>{4,3,2,1};
-
     // Start is called before the first frame update
     void Start()
     {
         MakePieces();
-        StartCoroutine(UpdatePiecesFrame());
 
     }
+
 
     // Update is called once per frame
 
@@ -28,72 +27,13 @@ public class CreatePieces : MonoBehaviour
 
     }
 
-    private IEnumerator UpdatePiecesFrame()
-    {
-        yield return new WaitForSeconds(2.0f);
-        if (piecesAlive[0] > 0)
-            piecesAlive[0] -= 1;
-        else
-            piecesAlive[0] += 4;
-        UpdatePieces();
-        StartCoroutine(UpdatePiecesFrame());
-    }
-
-    private void UpdatePieces()
-    {
-        int blue = piecesAlive[0], yellow = piecesAlive[1], green = piecesAlive[2], red = piecesAlive[3];
-        foreach (Piece p in pieces)
-        {
-            switch (p.getPieceColor())
-            {
-                case PieceColor.blue:
-                    if (blue > 0)
-                    {
-                        p.pieceObject.SetActive(true);
-                        blue--;
-                    }
-                    else
-                        p.pieceObject.SetActive(false);
-                    break;
-                case PieceColor.yellow:
-                    if (yellow > 0)
-                    {
-                        p.pieceObject.SetActive(true);
-                        yellow--;
-                    }
-                    else
-                        p.pieceObject.SetActive(false);
-                    break;
-                case PieceColor.green:
-                    if (green > 0)
-                    {
-                        p.pieceObject.SetActive(true);
-                        green--;
-                    }
-                    else
-                        p.pieceObject.SetActive(false);
-                    break;
-                case PieceColor.red:
-                    if (red > 0)
-                    {
-                        p.pieceObject.SetActive(true);
-                        red--;
-                    }
-                    else
-                        p.pieceObject.SetActive(false);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+    
 
     private void MakePieces()
     {
         float angle = 1.6f; //Why is 1.6f 90 ish degrees??????????????????????????
         for(int j = 0; j < 4; j++)
         {
-            Debug.Log("Pieces alive: "+piecesAlive[j]);
             float[] pos = { (float)(-Math.Sin(angle*j)*(defaultY-midStartY)+defaultX), (float)(Math.Cos(angle * j) * (defaultY - midStartY) + defaultX), defaultZ };
             for (int i = 0; i < 4; i++)
             {
