@@ -113,7 +113,7 @@ public class GameList : MonoBehaviour
         Debug.Log("clicked name: " + gamedata.GameName + " id:" + gamedata.Id );
         if (SignalR.Instance.Connected)
         {
-            //await SignalR.Instance.Connection.InvokeAsync("CreateLobby", Self.Instance.Name, gameName.text);
+            await SignalR.Instance.Connection.InvokeAsync("CreateLobby", Self.Instance.Name);
         }
     }
 }

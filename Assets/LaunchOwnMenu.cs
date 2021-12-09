@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 public class LaunchOwnMenu : MonoBehaviour
 {
@@ -28,13 +29,19 @@ public class LaunchOwnMenu : MonoBehaviour
         
     }
 
+
     // Update is called once per frame
     void Update()
     {
         
     }
 
-    async void deleteGame()
+    public void launchGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public async void deleteGame()
     {
         await SignalR.Instance.Connection.InvokeAsync("deleteGame", gameId);
     }
