@@ -12,6 +12,7 @@ public class GameList : MonoBehaviour
     public GameObject listItemObj;
     public Transform lobbyListHolder;
     public List<GameData> ListLobbies { get; set; }
+    public List<GameObject> Lobbies { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,7 @@ public class GameList : MonoBehaviour
                 foreach (var item in lobbies)
                 {
                     GameObject lobby = Instantiate(listItemObj, lobbyListHolder);
+                    lobby.name = item.GameName;
                     Button joinbtn = lobby.GetComponentInChildren<Button>();
                     TMP_Text[] texts = lobby.GetComponentsInChildren<TMP_Text>();
                     texts[0].text = item.Leader.Name;
@@ -37,6 +39,7 @@ public class GameList : MonoBehaviour
                     }
                     Debug.Log("particia " + item.Participants.Count.ToString());               
                     joinbtn.onClick.AddListener(()=> onJoinClick(item));
+                    Lobbies.Add(lobby);
                 }
             });
 
@@ -61,6 +64,19 @@ public class GameList : MonoBehaviour
                 Debug.Log("particia " + game.Participants.Count.ToString());
                 joinbtn.onClick.AddListener(() => onJoinClick(game));
            
+        });
+
+        SignalR.Instance.Connection.On<GameData>("RemoveGame", (gamedata) =>
+        {
+            Debug.Log("remove game" + gamedata.GameName);
+            
+            foreach (var item in Lobbies)
+            {
+                if(item.name == gamedata.GameName)
+                {
+                    Destroy(item.gameObject);
+                }
+            }
         });
 
 
@@ -92,9 +108,13 @@ public class GameList : MonoBehaviour
 
     }
 
-    public void onJoinClick(GameData gamedata)
+    public async void onJoinClick(GameData gamedata)
     {
-        Debug.Log("clicked " + gamedata.GameName);
+        Debug.Log("clicked name: " + gamedata.GameName + " id:" + gamedata.Id );
+        if (SignalR.Instance.Connected)
+        {
+            //await SignalR.Instance.Connection.InvokeAsync("CreateLobby", Self.Instance.Name, gameName.text);
+        }
     }
 }
 

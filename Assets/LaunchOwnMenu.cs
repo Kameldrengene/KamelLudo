@@ -10,6 +10,7 @@ public class LaunchOwnMenu : MonoBehaviour
     public TMP_Text gameName;
     public TMP_Text leader;
     public TMP_Text playerList;
+    public string gameId;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +21,7 @@ public class LaunchOwnMenu : MonoBehaviour
                 Debug.Log(game.GameName);
                 gameName.text = game.GameName;
                 leader.text = game.Leader.Name;
+                gameId = game.Id;
 
             });
         }
@@ -30,5 +32,10 @@ public class LaunchOwnMenu : MonoBehaviour
     void Update()
     {
         
+    }
+
+    async void deleteGame()
+    {
+        await SignalR.Instance.Connection.InvokeAsync("deleteGame", gameId);
     }
 }
