@@ -25,7 +25,7 @@ public class login : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Singleton.Instance.Token!=null)
+        if (SignalR.Instance.Token!=null)
         {
             this.gameObject.SetActive(false);   
             playermenu.SetActive(true);
@@ -43,7 +43,7 @@ public class login : MonoBehaviour
             connectText.text = "connection success";
             RestSingleton.Instance._isLoggedIn = true;
             RestSingleton.Instance.token = response;
-            Singleton.Instance.Token = response;
+            SignalR.Instance.Token = response;
             Debug.Log("response :" + response);
             Debug.Log("code :" + statusCode);
         }

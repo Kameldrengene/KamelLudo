@@ -15,8 +15,8 @@ public class GameList : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-            Singleton.Instance.Connection.On<List<GameData>>("ReceiveLobbies", (lobbies) =>
+
+        SignalR.Instance.Connection.On<List<GameData>>("ReceiveLobbies", (lobbies) =>
             {
                 Debug.Log("im here");
                 Debug.Log("Lobbies: " + lobbies.Count);
@@ -39,7 +39,30 @@ public class GameList : MonoBehaviour
                     joinbtn.onClick.AddListener(()=> onJoinClick(item));
                 }
             });
-        
+
+        SignalR.Instance.Connection.On<GameData>("ReceiveGame", (game) =>
+        {
+            Debug.Log("received game");
+    
+            
+                GameObject lobby = Instantiate(listItemObj, lobbyListHolder);
+                Button joinbtn = lobby.GetComponentInChildren<Button>();
+                TMP_Text[] texts = lobby.GetComponentsInChildren<TMP_Text>();
+                texts[0].text = game.Leader.Name;
+                texts[1].text = game.GameName;
+                if (game.Participants.Count == 0)
+                {
+                    texts[2].text = "ingen";
+                }
+                else
+                {
+                    texts[2].text = game.Participants.Count.ToString();
+                }
+                Debug.Log("particia " + game.Participants.Count.ToString());
+                joinbtn.onClick.AddListener(() => onJoinClick(game));
+           
+        });
+
 
         ArrayList arlist = new ArrayList()
                         {
@@ -62,9 +85,9 @@ public class GameList : MonoBehaviour
 
     public async Task InvokeLobbiesAsync()
     {
-        if (Singleton.Instance.Connected)
+        if (SignalR.Instance.Connected)
         {
-           await Singleton.Instance.Connection.InvokeAsync("getLobbies");
+           await SignalR.Instance.Connection.InvokeAsync("getLobbies");
         }
 
     }

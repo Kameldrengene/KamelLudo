@@ -15,19 +15,19 @@ public class Registration : MonoBehaviour
     public GameObject playermenu;
 
     public Text connectText;
-    private string URL = "http://localhost:5000/api/player";
+    private string URL = SignalR.Instance.ConnectionString + "/api/player";
     // Start is called before the first frame update
     void Start()
     {
         connectText = GameObject.Find("registerText").GetComponent<Text>();
-        if (Singleton.Instance.Token != null) connectText.text = "you are logged in";
+        if (SignalR.Instance.Token != null) connectText.text = "you are logged in";
         else connectText.text = "";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Singleton.Instance.Token != null)
+        if (SignalR.Instance.Token != null)
         {
             this.gameObject.SetActive(false);
             playermenu.SetActive(true);
@@ -55,7 +55,7 @@ public class Registration : MonoBehaviour
             connectText.text = "connection success";
             RestSingleton.Instance._isLoggedIn = true;
             RestSingleton.Instance.token = response;
-            Singleton.Instance.Token = response;
+            SignalR.Instance.Token = response;
             Debug.Log("response :" + response);
             Debug.Log("code :" + statusCode);
         }

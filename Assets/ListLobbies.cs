@@ -7,9 +7,9 @@ public class ListLobbies : MonoBehaviour
 {
     public async void InvokeLobbiesAsync()
     {
-        if (Singleton.Instance.Connected)
+        if (SignalR.Instance.Connected)
         {
-            await Singleton.Instance.Connection.InvokeAsync("getBareLobbies");
+            await SignalR.Instance.Connection.InvokeAsync("getBareLobbies");
             Debug.Log("In Invoke Lobbies");
         }
 

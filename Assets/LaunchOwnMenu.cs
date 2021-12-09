@@ -13,9 +13,9 @@ public class LaunchOwnMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Singleton.Instance.Connected)
+        if (SignalR.Instance.Connected)
         {
-            Singleton.Instance.Connection.On<GameData>("EnterGame", (game) =>
+            SignalR.Instance.Connection.On<GameData>("EnterGame", (game) =>
             {
                 Debug.Log(game.GameName);
                 gameName.text = game.GameName;
