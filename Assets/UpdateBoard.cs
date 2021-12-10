@@ -18,6 +18,9 @@ public class UpdateBoard : MonoBehaviour
     private int roll;
     private int legalMoves = 0;
     private GameObject turnText;
+    private GameObject rollText;
+    private TextMesh tt;
+    private TextMesh rt;
 
 
     // Start is called before the first frame update
@@ -54,17 +57,26 @@ public class UpdateBoard : MonoBehaviour
     }
 
 
+    public void LoadGameObjects()
+    {
+        turnText = GameObject.Find("turntext");
+        tt = turnText.GetComponent<TextMesh>();
+        rollText = GameObject.Find("rollText");
+        rt = rollText.GetComponent<TextMesh>();
+        rollButton = GameObject.Find("Roll").GetComponent<Button>();
+    }
+
     public async void OnRollClick()
     {
         //UpdateDeadPieces();
         //UpdatePiecesPosition();
-        turnText = GameObject.Find("turntext");
-        TextMesh t = turnText.GetComponent<TextMesh>();
-        t.text = "Turn: Blue";
+
+        LoadGameObjects();
         roll = Dice.Instance.roll();
+        rt.text = "Roll: " + roll;
+        tt.text = "Turn: Blue";
         legalMoves = 0;
         Debug.Log("Roll: " + roll);
-        rollButton = GameObject.Find("Roll").GetComponent<Button>();
         currPlayerPiece.Clear();
         //TODO: Get player color instead of piececolor blue <-----
         foreach(Piece p in pieces)
