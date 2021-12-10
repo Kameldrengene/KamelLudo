@@ -21,6 +21,11 @@ public class PieceData
         return true;
     }
 
+    public PieceData()
+    {
+
+    }
+
     public PieceData(PieceColor pc, int pID, int fID, int fQ, bool inPlay, bool Done)
     {
         this._pieceColor = pc;

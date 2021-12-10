@@ -3,24 +3,25 @@ using System.Collections.Generic;
 
 public class BoardData
 {
-    private List<PieceData> _pieces;
+    private string _pieces;
     private PieceColor _currentPlayer;
     private bool _isWon;
     private int _roll;
 
     public BoardData()
     {
-        _pieces = new List<PieceData>();
-    }
-    public BoardData(List<PieceData> p, PieceColor cP, bool iw, int r)
-    {
-        _pieces = p;
-        _currentPlayer = cP;
-        _isWon = iw;
-        _roll = r;
+
     }
 
-    public List<PieceData> Pieces
+    public BoardData(string ps, PieceColor currentPlayer, bool isWon, int roll)
+    {
+        this._pieces = ps;
+        this._currentPlayer = currentPlayer;
+        this._isWon = isWon;
+        this._roll = roll;
+    }
+
+    public string Pieces
     {
         get { return _pieces; }
         set { this._pieces = value; }
@@ -42,5 +43,6 @@ public class BoardData
         get { return _roll; }
         set { this._roll = value; }
     }
+
 }
 

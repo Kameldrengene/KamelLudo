@@ -39,7 +39,7 @@ public class UpdateBoard : MonoBehaviour
 
             Debug.Log("Board Game Roll: " + game.Game.Roll);
             Debug.Log("Board player: " + game.Game.CurrentPlayer);
-            Debug.Log("Piece: " + game.Game.Pieces.Count());
+            Debug.Log("Piece: " + game.Game.Pieces);
             updateGame(game);
             latestGame = game;
             Debug.Log("Board exist: "+game.Game);

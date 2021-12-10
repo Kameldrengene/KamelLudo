@@ -14,7 +14,7 @@ public class GameData
     public GameData()
     {
         _participants = new List<Player>();
-        _game = new BoardData();
+        _game = new BoardData(null, 0, false, 0);
     }
 
     public GameData(string id, string gameName, Player leader, List<Player> participants)
