@@ -31,11 +31,11 @@ public class PieceData
         this._isDone = Done;
     }
 
-    public PieceColor PieceColor { get => _pieceColor; set => _pieceColor = value; }
-    public int PieceID { get => _pieceID; set => _pieceID = value; }
-    public int FieldID { get => _fieldID; set => _fieldID = value; }
-    public int FieldQuadrant { get => _fieldQuadrant; set => _fieldQuadrant = value; }
-    public bool IsInPlay { get => _isInPlay; set => _isInPlay = value; }
-    public bool IsDone { get => _isDone; set => _isDone = value; }
+    public PieceColor PieceColor{ get {return _pieceColor; } set {this._pieceColor = value; } }
+    public int PieceID{ get {return _pieceID; } set {this._pieceID = value; } }
+    public int FieldID{ get {return _fieldID; } set {this._fieldID = value; } }
+    public int FieldQuadrant{ get {return _fieldQuadrant; } set {this._fieldQuadrant= value; } }
+    public bool IsInPlay{ get {return _isInPlay; } set {this._isInPlay = value; } }
+    public bool IsDone{ get {return _isDone; } set {this._isDone = value; } }
 }
 
