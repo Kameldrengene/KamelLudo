@@ -11,21 +11,9 @@ public class UpdateBoard : MonoBehaviour
 
     private List<int> piecesAlive = new List<int> { 4, 4, 4, 4 };
     public List<Piece> pieces = Board.pieces;
-    private List<Vector3> pVector = new List<Vector3>();
+    private List<Vector3> pVector = Board.locations;
 
-    private List<Vector3> getAllPos()
-    {
-        if(pVector.Count > 0)
-        {
-            return pVector;
-        }
-        List<Vector3> tempList = new List<Vector3>();
-        foreach(Piece p in pieces)
-        {
-            tempList.Add(p.pieceObject.transform.position);
-        }
-        return tempList;
-    }
+   
 
     // Start is called before the first frame update
     async void Start()
@@ -65,7 +53,6 @@ public class UpdateBoard : MonoBehaviour
     public void onBlueClick()
     {
         //UpdateDeadPieces();
-        pVector = getAllPos();
         //UpdatePiecesPosition();
     }
 
