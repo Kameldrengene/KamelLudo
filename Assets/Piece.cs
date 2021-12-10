@@ -16,9 +16,11 @@ public abstract class Piece
     public GameObject pieceObject { get; set; }
     public Field  field{ get; set; }
     protected Player owner;
+    public int pieceID { get; set; }
 
-    protected Piece(GameObject pieceObject){
+    protected Piece(GameObject pieceObject, int id){
         this.pieceObject = pieceObject;
+        this.pieceID = id;
     }
 
     public PieceColor getPieceColor(){
@@ -28,7 +30,7 @@ public abstract class Piece
 
 public class RedPiece : Piece
 {
-    public RedPiece(GameObject piece) : base(piece)
+    public RedPiece(GameObject piece, int id) : base(piece, id)
     {
         this.pieceColor = PieceColor.red;
     }
@@ -37,7 +39,7 @@ public class RedPiece : Piece
 
 public class BluePiece : Piece
 {
-    public BluePiece(GameObject piece) : base(piece)
+    public BluePiece(GameObject piece, int id) : base(piece, id)
     {
         this.pieceColor = PieceColor.blue;
     }
@@ -45,7 +47,7 @@ public class BluePiece : Piece
 
 public class YellowPiece : Piece
 {
-    public YellowPiece(GameObject piece) : base(piece)
+    public YellowPiece(GameObject piece, int id) : base(piece, id)
     {
         this.pieceColor = PieceColor.yellow;
     }
@@ -53,7 +55,7 @@ public class YellowPiece : Piece
 
 public class GreenPiece : Piece
 {
-    public GreenPiece(GameObject piece) : base(piece)
+    public GreenPiece(GameObject piece, int id) : base(piece, id)
     {
         this.pieceColor = PieceColor.green;
     }
