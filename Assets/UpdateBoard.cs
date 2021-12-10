@@ -12,9 +12,11 @@ public class UpdateBoard : MonoBehaviour
 
     private List<int> piecesAlive = new List<int> { 4, 4, 4, 4 };
     public List<Piece> pieces = Board.pieces;
+    public List<Vector3> oldLocation = Board.locations;
     private Button rollButton;
     private List<Button> buttonPiece = new List<Button>();
-    private List<Piece> currPlayerPiece = new List<Piece>();
+    private List<PieceData> currPlayerPiece = new List<PieceData>();
+    private List<Field>[] fields = Board.fieldList;
     private int roll;
     private int legalMoves = 0;
     private GameObject turnText;
@@ -23,6 +25,7 @@ public class UpdateBoard : MonoBehaviour
     private TextMesh tt;
     private TextMesh rt;
     private TextMesh gt;
+    private GameData latestGame;
 
 
     // Start is called before the first frame update
@@ -36,8 +39,11 @@ public class UpdateBoard : MonoBehaviour
 
             Debug.Log("Board Game Roll: " + game.Game.Roll);
             Debug.Log("Board player: " + game.Game.CurrentPlayer);
+            Debug.Log("Piece: " + game.Game.Pieces.Count());
             updateGame(game);
+            latestGame = game;
             Debug.Log("Board exist: "+game.Game);
+            
 
 
         });
@@ -79,6 +85,22 @@ public class UpdateBoard : MonoBehaviour
     {
         tt.text = "Turn: " + game.Game.CurrentPlayer.ToString();
         rt.text = "Roll: " + game.Game.Roll;
+        for(int i = 0; i < game.Game.Pieces.Count(); i++)
+        {
+
+            //If Piece is not in play and is not done
+            /*if (!game.Game.Pieces[i].IsInPlay && !game.Game.Pieces[i].IsDone)
+            {
+                pieces[i].pieceObject.transform.position = oldLocation[i]; //Set to home position
+            } else if(game.Game.Pieces[i].IsDone) //If piece is done, remove it
+            {
+                pieces[i].pieceObject.SetActive(false);
+            }
+            else if(game.Game.Pieces[i].IsInPlay) //If piece is in play, then set to fieldID
+            {
+                pieces[i].pieceObject.transform.position = fields[game.Game.Pieces[i].FieldQuadrant][game.Game.Pieces[i].FieldID].field.transform.position;
+            }*/
+        }
     }
 
     public void LoadGameObjects()
@@ -104,9 +126,9 @@ public class UpdateBoard : MonoBehaviour
         rt.text = "Roll: " + roll;
         currPlayerPiece.Clear();
         //TODO: Get player color instead of piececolor blue <-----
-        foreach(Piece p in pieces)
+        /*(PieceData p in latestGame.Game.Pieces)
         {
-            if(p.getPieceColor() == PieceColor.blue)
+            if(p.PieceColor == PieceColor.blue)
             {
                 currPlayerPiece.Add(p);
             }
@@ -123,7 +145,6 @@ public class UpdateBoard : MonoBehaviour
             
             if (currPlayerPiece[it].isMoveable(roll))
             {
-                
                 legalMoves++;
                 b.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
                 b.enabled = true;
@@ -138,11 +159,11 @@ public class UpdateBoard : MonoBehaviour
                 b.interactable = false;
             }
             it++;
-        }
-        if(legalMoves <= 0)
+        }*/
+        if (legalMoves <= 0)
         {
             //Send choice to server with roll and legalMoves;
-            await TakeTurn(roll, legalMoves, -1);
+            await TakeTurn(roll, legalMoves, 0);
         }
 
     }
@@ -162,9 +183,9 @@ public class UpdateBoard : MonoBehaviour
         if(currPlayerPiece[p].isMoveable(roll))
         {
             
-            if (!currPlayerPiece[p].isInPlay)
+            if (!currPlayerPiece[p].IsInPlay)
             {
-                currPlayerPiece[p].isInPlay = true;
+                currPlayerPiece[p].IsInPlay = true;
             }
         }
         foreach (Button b in buttonPiece)
