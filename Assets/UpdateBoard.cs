@@ -32,20 +32,27 @@ public class UpdateBoard : MonoBehaviour
         SignalRGame.Instance.Connection.On<GameData>("UpdateGame", (game) =>
         {
             Debug.Log("Board hello: From Board data caller");
-            Debug.Log("Board data test: " + game.Game.isWon);
-            tt.text = "Turn: "+game.Game.currentPlayer.ToString();
+            Debug.Log("Board data test: " + game.Game.IsWon);
+
+            Debug.Log("Board Game Roll: " + game.Game.Roll);
+            Debug.Log("Board player: " + game.Game.CurrentPlayer);
+            updateGame(game);
+            Debug.Log("Board exist: "+game.Game);
+
 
         });
         SignalRGame.Instance.Connection.On<GameData>("GetGame", (game) =>
         {
             Debug.Log("Game name: " + game.GameName);
             Debug.Log("Game ID: " + game.Id);
-            
-            gt.text = "Game: "+game.GameName;
+            gt.text = "Game: " + game.GameName;
+            rt.text = "Roll: " + game.Game.Roll;
+
+
         });
         await SignalRGame.Instance.Connection.InvokeAsync("GetGame", SignalRGame.Instance.Gameid);
         
-        await SignalRGame.Instance.Connection.InvokeAsync("UpdateGame", SignalRGame.Instance.Gameid, "1", "2");
+        await SignalRGame.Instance.Connection.InvokeAsync("UpdateGame", SignalRGame.Instance.Gameid, "1", "2","3");
         Debug.Log(SignalRGame.Instance.Gameid);
         Debug.Log("START LOADED!!!!");
         Debug.Log("SignalR Game Connected: " + SignalRGame.Instance.Connected);
@@ -69,6 +76,10 @@ public class UpdateBoard : MonoBehaviour
         StartCoroutine(UpdatePiecesFrame());
     }
 
+    private void updateGame(GameData game)
+    {
+        tt.text = "Turn: " + game.Game.CurrentPlayer.ToString();
+    }
 
     public void LoadGameObjects()
     {
@@ -76,7 +87,6 @@ public class UpdateBoard : MonoBehaviour
         tt = turnText.GetComponent<TextMesh>();
         rollText = GameObject.Find("rollText");
         rt = rollText.GetComponent<TextMesh>();
-        rt.text = "Last Roll: 0";
         gameText = GameObject.Find("gameText");
         gt = gameText.GetComponent<TextMesh>();
         rollButton = GameObject.Find("Roll").GetComponent<Button>();
@@ -89,9 +99,9 @@ public class UpdateBoard : MonoBehaviour
 
         LoadGameObjects();
         roll = Dice.Instance.roll();
-        rt.text = "Last Roll: " + roll;
         legalMoves = 0;
         Debug.Log("Roll: " + roll);
+        rt.text = "Roll: " + roll;
         currPlayerPiece.Clear();
         //TODO: Get player color instead of piececolor blue <-----
         foreach(Piece p in pieces)
@@ -132,27 +142,23 @@ public class UpdateBoard : MonoBehaviour
         if(legalMoves <= 0)
         {
             //Send choice to server with roll and legalMoves;
-            //await TakeTurn(roll, legalMoves);
+            await TakeTurn(roll, legalMoves, -1);
         }
 
     }
 
-    private async Task TakeTurn(int r, int lm)
+    private async Task TakeTurn(int r, int lm, int pid)
     {
-        if (SignalR.Instance.Connected)
-        {
-            await SignalR.Instance.Connection.InvokeAsync("SendChoice", Self.Instance.Name, r, lm);
-        }
-        else
-        {
-            Debug.Log("Connection Lost");
-        }
+
+        await SignalRGame.Instance.Connection.InvokeAsync("UpdateGame", SignalRGame.Instance.Gameid, r.ToString(), lm.ToString(), pid.ToString());
+        await SignalRGame.Instance.Connection.InvokeAsync("GetGame", SignalRGame.Instance.Gameid);
+
     }
 
-       
-    
 
-    public void OnPieceClick(int p)
+
+
+    public async void OnPieceClick(int p)
     {
         if(currPlayerPiece[p].isMoveable(roll))
         {
@@ -160,7 +166,6 @@ public class UpdateBoard : MonoBehaviour
             if (!currPlayerPiece[p].isInPlay)
             {
                 currPlayerPiece[p].isInPlay = true;
-                UpdatePiecesPosition(currPlayerPiece[p]);
             }
         }
         foreach (Button b in buttonPiece)
@@ -171,7 +176,7 @@ public class UpdateBoard : MonoBehaviour
         }
         rollButton.enabled = true;
         rollButton.interactable = true;
-
+        await TakeTurn(roll, legalMoves, p);
 
 
     }

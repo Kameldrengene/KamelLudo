@@ -14,6 +14,7 @@ public class GameData
     public GameData()
     {
         _participants = new List<Player>();
+        _game = new BoardData();
     }
 
     public GameData(string id, string gameName, Player leader, List<Player> participants)
@@ -22,6 +23,14 @@ public class GameData
         _gameName = gameName;
         _leader = leader;
         _participants = participants;
+    }
+    public GameData(string id, string gameName, Player leader, List<Player> participants, BoardData boardData)
+    {
+        _id = id;
+        _gameName = gameName;
+        _leader = leader;
+        _participants = participants;
+        _game = boardData;
     }
 
     public string GameName
