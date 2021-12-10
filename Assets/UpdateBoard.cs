@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,7 +37,8 @@ public class UpdateBoard : MonoBehaviour
         {
             Debug.Log("Board hello: From Board data caller");
             Debug.Log("Board data test: " + game.Game.IsWon);
-
+            List<PieceData> pData = JsonSerializer.Deserialize<List<PieceData>>(game.Game.Pieces);
+            Debug.Log("pData size: " + pData.Count());
             Debug.Log("Board Game Roll: " + game.Game.Roll);
             Debug.Log("Board player: " + game.Game.CurrentPlayer);
             Debug.Log("Piece: " + game.Game.Pieces);
