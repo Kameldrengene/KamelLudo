@@ -34,17 +34,18 @@ public class SignalR
     public HubConnection Connection
     {
         get { return _connection; }
+        set { _connection = value; }
     }
     public void EstablishConnection()
     {
         Debug.Log(ConnectionString);
        
-        _connection = new HubConnectionBuilder().WithUrl(ConnectionString + "/lobbyHub").Build();
-        _connection.Closed += async (error) =>
-        {
-            await Task.Delay(1000);
-            await _connection.StartAsync();
-        };
+        _connection = new HubConnectionBuilder().WithUrl(ConnectionString + "/lobbyHub").WithAutomaticReconnect().Build();
+        //_connection.Closed += async (error) =>
+        //{
+        //    await Task.Delay(1000);
+        //    await _connection.StartAsync();
+        //};
 
         _connection.On<string>("Connected", (connetionid) =>
          {

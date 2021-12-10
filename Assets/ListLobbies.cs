@@ -19,7 +19,7 @@ public class ListLobbies : MonoBehaviour
 
     //}
 
-    async void Start()
+    public async void getLobbies()
     {
         if (SignalR.Instance.Connected)
         {
@@ -31,4 +31,5 @@ public class ListLobbies : MonoBehaviour
             Debug.Log("Connection Lost");
         }
     }
+
 }
