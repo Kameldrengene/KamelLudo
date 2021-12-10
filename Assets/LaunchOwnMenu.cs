@@ -15,6 +15,8 @@ public class LaunchOwnMenu : MonoBehaviour
     public string gameId;
     public GameData gameData;
     public Button mybutton;
+    public GameObject launchmenu;
+    public GameObject selectMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +34,20 @@ public class LaunchOwnMenu : MonoBehaviour
         if (SignalR.Instance.Connected)
         {
             Debug.Log("in launch menu");
+
+            SignalR.Instance.Connection.On<GameData>("RemoveGame", (gamedata) =>
+            {
+                if (!gameData.Leader.Name.Contains(Self.Instance.Name))
+                {
+                    Debug.Log("kick participant" + gamedata.GameName);
+                    Destroy(selectMenu);
+                    
+                    selectMenu.SetActive(true);
+                    launchmenu.SetActive(false);
+                    
+                }
+               
+            });
 
             SignalR.Instance.Connection.On<GameData>("RecieveUpdatedGame", (game) =>
             {
@@ -52,13 +68,15 @@ public class LaunchOwnMenu : MonoBehaviour
                 }
             });
 
-            SignalR.Instance.Connection.On<GameData>("EnterGame", (game) =>
+            SignalR.Instance.Connection.On<GameData>("EnterGame", async (game) =>
             {
                 Debug.Log(game.GameName);
                 gameName.text = game.GameName;
                 leader.text = game.Leader.Name;
                 gameId = game.Id;
                 gameData = game;
+                playerList.text = "";
+                await SignalRGame.Instance.Connection.InvokeAsync("AddToGroup", game.Id);
 
             });
 
