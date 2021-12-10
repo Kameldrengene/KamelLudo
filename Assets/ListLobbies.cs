@@ -5,7 +5,21 @@ using UnityEngine;
 
 public class ListLobbies : MonoBehaviour
 {
-    public async void InvokeLobbiesAsync()
+    //public async void InvokeLobbiesAsync()
+    //{
+    //    if (SignalR.Instance.Connected)
+    //    {
+    //        await SignalR.Instance.Connection.InvokeAsync("getBareLobbies");
+    //        Debug.Log("In Invoke Lobbies");
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("Connection Lost");
+    //    }
+
+    //}
+
+    async void Start()
     {
         if (SignalR.Instance.Connected)
         {
@@ -16,6 +30,5 @@ public class ListLobbies : MonoBehaviour
         {
             Debug.Log("Connection Lost");
         }
-
     }
 }
