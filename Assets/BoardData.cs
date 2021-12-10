@@ -6,7 +6,7 @@ public class BoardData
     private List<PieceData> _pieces;
     private PieceColor _currentPlayer;
     private bool _isWon;
-    private int _roll = 2;
+    private int _roll;
 
     public BoardData()
     {
