@@ -47,7 +47,7 @@ public class CreatePieces : MonoBehaviour
                     newPos = new Vector3(pos[1], -pos[0], pos[2]);
                     cylinder.transform.position = newPos;
                     cylinder.GetComponent<Renderer>().material.color = Color.blue;
-                    newPiece = new BluePiece(cylinder);
+                    newPiece = new BluePiece(cylinder, j+1);
 
                 }
                 else if (i == 1) //Yellow
@@ -55,7 +55,7 @@ public class CreatePieces : MonoBehaviour
                     newPos = new Vector3(-pos[0], -pos[1], pos[2]);
                     cylinder.transform.position = newPos;
                     cylinder.GetComponent<Renderer>().material.color = Color.yellow;
-                    newPiece = new YellowPiece(cylinder);
+                    newPiece = new YellowPiece(cylinder, j + 1);
 
                 }
                 else if (i == 2) //Green
@@ -63,7 +63,7 @@ public class CreatePieces : MonoBehaviour
                     newPos = new Vector3(-pos[1], pos[0], pos[2]);
                     cylinder.transform.position = newPos;
                     cylinder.GetComponent<Renderer>().material.color = Color.green;
-                    newPiece = new GreenPiece(cylinder);
+                    newPiece = new GreenPiece(cylinder, j + 1);
 
                 }
                 else //Red
@@ -71,7 +71,7 @@ public class CreatePieces : MonoBehaviour
                     newPos = new Vector3(pos[0],pos[1], pos[2]);
                     cylinder.transform.position = newPos;
                     cylinder.GetComponent<Renderer>().material.color = Color.red;
-                    newPiece = new RedPiece(cylinder);
+                    newPiece = new RedPiece(cylinder, j + 1);
 
                 }
                 pieces.Add(newPiece);
