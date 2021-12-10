@@ -9,6 +9,7 @@ public class GameData
     private string _gameName;
     private Player _leader;
     private List<Player> _participants;
+    private BoardData _game;
 
     public GameData()
     {
@@ -28,6 +29,13 @@ public class GameData
         get { return _gameName; }
         set { this._gameName = value; }
     }
+
+    public BoardData Game
+    {
+        get { return _game; }
+        set { this._game = value; }
+    }
+
     public string Id
     {
         get { return _id; }

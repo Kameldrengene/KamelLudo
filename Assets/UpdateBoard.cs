@@ -28,15 +28,19 @@ public class UpdateBoard : MonoBehaviour
     // Start is called before the first frame update
     async void Start()
     {
+        LoadGameObjects();
         SignalRGame.Instance.Connection.On<GameData>("UpdateGame", (game) =>
         {
             Debug.Log("Board hello: From Board data caller");
+            Debug.Log("Board data test: " + game.Game.isWon);
+            tt.text = "Turn: "+game.Game.currentPlayer.ToString();
+
         });
         SignalRGame.Instance.Connection.On<GameData>("GetGame", (game) =>
         {
             Debug.Log("Game name: " + game.GameName);
             Debug.Log("Game ID: " + game.Id);
-            LoadGameObjects();
+            
             gt.text = "Game: "+game.GameName;
         });
         await SignalRGame.Instance.Connection.InvokeAsync("GetGame", SignalRGame.Instance.Gameid);
@@ -86,7 +90,6 @@ public class UpdateBoard : MonoBehaviour
         LoadGameObjects();
         roll = Dice.Instance.roll();
         rt.text = "Last Roll: " + roll;
-        tt.text = "Turn: Blue";
         legalMoves = 0;
         Debug.Log("Roll: " + roll);
         currPlayerPiece.Clear();
