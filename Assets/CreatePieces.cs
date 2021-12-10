@@ -11,6 +11,7 @@ public class CreatePieces : MonoBehaviour
     private float defaultZ = -1.29f;
     private float midStartY = 9.77f;
     public List<Piece> pieces = Board.pieces;
+    public List<Vector3> locations= Board.locations;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +32,7 @@ public class CreatePieces : MonoBehaviour
 
     private void MakePieces()
     {
-        float angle = 1.6f; //Why is 1.6f 90 ish degrees??????????????????????????
+        float angle = 1.5708f; //1.5708 radians almost equals 90 degrees
         for(int j = 0; j < 4; j++)
         {
             float[] pos = { (float)(-Math.Sin(angle*j)*(defaultY-midStartY)+defaultX), (float)(Math.Cos(angle * j) * (defaultY - midStartY) + defaultX), defaultZ };
@@ -74,6 +75,7 @@ public class CreatePieces : MonoBehaviour
 
                 }
                 pieces.Add(newPiece);
+                locations.Add(newPiece.pieceObject.transform.position);
 
             }
         }
