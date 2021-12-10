@@ -70,11 +70,11 @@ public class LaunchOwnMenu : MonoBehaviour
             SignalR.Instance.Connection.On<GameData>("EnterGame", async (game) =>
             {
                 Debug.Log(game.GameName);
-                gameName.text = game.GameName;
-                leader.text = game.Leader.Name;
-                gameId = game.Id;
-                gameData = game;
-                playerList.text = "";
+                this.gameName.text = game.GameName;
+                this.leader.text = game.Leader.Name;
+                this.gameId = game.Id;
+                this.gameData = game;
+                this.playerList.text = "";
                 await SignalRGame.Instance.Connection.InvokeAsync("AddToGroup", game.Id);
 
             });

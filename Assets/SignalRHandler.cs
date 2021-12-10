@@ -6,43 +6,48 @@ using System.Threading.Tasks;
 
 public class SignalRHandler : MonoBehaviour
 {
+    public void signalRConnect()
+    {
+        SignalR.Instance.EstablishConnection();
+    }
+
     //private static HubConnection connection;
     // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log("Hello World!");
-        SignalR.Instance.EstablishConnection();
+    //void Start()
+    //{
+    //    //Debug.Log("Hello World!");
+    //    //SignalR.Instance.EstablishConnection();
 
-        SignalR.Instance.Connection.On<string>("Connected", (connetionid) =>
-        {
-            Debug.Log(connetionid);
+    //    //SignalR.Instance.Connection.On<string>("Connected", (connetionid) =>
+    //    //{
+    //    //    Debug.Log(connetionid);
 
-        });
+    //    //});
       
-        Connect();
-    }
+    //    //Connect();
+    //}
 
 
-    private async void Connect()
-    {
-        try
-        {
+    //private async void Connect()
+    //{
+    //    try
+    //    {
             
-            await SignalR.Instance.Connection.StartAsync();
-            SignalR.Instance.Connected = true;
+    //        await SignalR.Instance.Connection.StartAsync();
+    //        SignalR.Instance.Connected = true;
 
-            Debug.Log("connection started");
-        }
-        catch (System.Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
+    //        Debug.Log("connection started");
+    //    }
+    //    catch (System.Exception ex)
+    //    {
+    //        Debug.Log(ex.Message);
+    //    }
 
-    }
+    //}
 
     // Update is called once per frame
-    void Update()
-    {
+    //void Update()
+    //{
         
-    }
+    //}
 }
