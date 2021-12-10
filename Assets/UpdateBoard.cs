@@ -46,13 +46,12 @@ public class UpdateBoard : MonoBehaviour
             Debug.Log("Game name: " + game.GameName);
             Debug.Log("Game ID: " + game.Id);
             gt.text = "Game: " + game.GameName;
-            rt.text = "Roll: " + game.Game.Roll;
 
 
         });
         await SignalRGame.Instance.Connection.InvokeAsync("GetGame", SignalRGame.Instance.Gameid);
         
-        await SignalRGame.Instance.Connection.InvokeAsync("UpdateGame", SignalRGame.Instance.Gameid, "1", "2","3");
+        await SignalRGame.Instance.Connection.InvokeAsync("UpdateGame", SignalRGame.Instance.Gameid, "0", "0","0"); //ID, Roll, LegalMoves, PieceID
         Debug.Log(SignalRGame.Instance.Gameid);
         Debug.Log("START LOADED!!!!");
         Debug.Log("SignalR Game Connected: " + SignalRGame.Instance.Connected);
@@ -151,7 +150,6 @@ public class UpdateBoard : MonoBehaviour
     {
 
         await SignalRGame.Instance.Connection.InvokeAsync("UpdateGame", SignalRGame.Instance.Gameid, r.ToString(), lm.ToString(), pid.ToString());
-        await SignalRGame.Instance.Connection.InvokeAsync("GetGame", SignalRGame.Instance.Gameid);
 
     }
 
