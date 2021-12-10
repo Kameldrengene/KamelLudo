@@ -1851,6 +1851,8 @@ MonoBehaviour:
   playerList: {fileID: 656814201}
   gameId: 
   mybutton: {fileID: 39943762}
+  launchmenu: {fileID: 218181800}
+  selectMenu: {fileID: 717664751}
 --- !u!1 &225483334
 GameObject:
   m_ObjectHideFlags: 0
