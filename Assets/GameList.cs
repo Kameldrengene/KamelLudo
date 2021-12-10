@@ -101,9 +101,16 @@ public class GameList : MonoBehaviour
 
                 foreach (GameObject item in Lobbies)
                 {
-                    Debug.Log(item.ToString());
-                    if (item.name == gamedata.GameName)
-                        Destroy(item);
+                    if (item != null)
+                    {
+                        Debug.Log(item.ToString());
+                        if (item.name == gamedata.GameName)
+                        {
+                            Destroy(item);
+                            Lobbies.Remove(item);
+                        }
+
+                    }
                 }
             });
         }
