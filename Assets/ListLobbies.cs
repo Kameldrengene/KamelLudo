@@ -12,6 +12,10 @@ public class ListLobbies : MonoBehaviour
             await SignalR.Instance.Connection.InvokeAsync("getBareLobbies");
             Debug.Log("In Invoke Lobbies");
         }
+        else
+        {
+            Debug.Log("Connection Lost");
+        }
 
     }
 }

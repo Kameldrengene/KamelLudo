@@ -8,11 +8,12 @@ using TMPro;
 
 public class GameList : MonoBehaviour
 {
-     
+    public GameObject launchmenu;
+    public GameObject gamelist;
     public GameObject listItemObj;
     public Transform lobbyListHolder;
     public List<GameData> ListLobbies { get; set; }
-    public List<GameObject> Lobbies { get; private set; }
+    public List<GameObject> Lobbies = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +30,7 @@ public class GameList : MonoBehaviour
                     TMP_Text[] texts = lobby.GetComponentsInChildren<TMP_Text>();
                     texts[0].text = item.Leader.Name;
                     texts[1].text = item.GameName;
-                    if(item.Participants.Count == 0)
+                    if (item.Participants.Count == 0)
                     {
                         texts[2].text = "ingen";
                     }
@@ -37,8 +38,8 @@ public class GameList : MonoBehaviour
                     {
                         texts[2].text = item.Participants.Count.ToString();
                     }
-                    Debug.Log("particia " + item.Participants.Count.ToString());               
-                    joinbtn.onClick.AddListener(()=> onJoinClick(item));
+                    Debug.Log("particia " + item.Participants.Count.ToString());
+                    joinbtn.onClick.AddListener(() => onJoinClick(item));
                     Lobbies.Add(lobby);
                 }
             });
@@ -46,36 +47,35 @@ public class GameList : MonoBehaviour
         SignalR.Instance.Connection.On<GameData>("ReceiveGame", (game) =>
         {
             Debug.Log("received game");
-    
-            
-                GameObject lobby = Instantiate(listItemObj, lobbyListHolder);
-                Button joinbtn = lobby.GetComponentInChildren<Button>();
-                TMP_Text[] texts = lobby.GetComponentsInChildren<TMP_Text>();
-                texts[0].text = game.Leader.Name;
-                texts[1].text = game.GameName;
-                if (game.Participants.Count == 0)
-                {
-                    texts[2].text = "ingen";
-                }
-                else
-                {
-                    texts[2].text = game.Participants.Count.ToString();
-                }
-                Debug.Log("particia " + game.Participants.Count.ToString());
-                joinbtn.onClick.AddListener(() => onJoinClick(game));
-           
+            GameObject lobby = Instantiate(listItemObj, lobbyListHolder);
+            lobby.name = game.GameName;
+            Button joinbtn = lobby.GetComponentInChildren<Button>();
+            TMP_Text[] texts = lobby.GetComponentsInChildren<TMP_Text>();
+            texts[0].text = game.Leader.Name;
+            texts[1].text = game.GameName;
+            if (game.Participants.Count == 0)
+            {
+                texts[2].text = "ingen";
+            }
+            else
+            {
+                texts[2].text = game.Participants.Count.ToString();
+            }
+            Debug.Log("particia " + game.Participants.Count.ToString());
+            joinbtn.onClick.AddListener(() => onJoinClick(game));
+            Lobbies.Add(lobby);
+
         });
 
         SignalR.Instance.Connection.On<GameData>("RemoveGame", (gamedata) =>
         {
-            Debug.Log("remove game" + gamedata.GameName);
-            
-            foreach (var item in Lobbies)
+            Debug.Log("remove game " + gamedata.GameName);
+
+            foreach (GameObject item in Lobbies)
             {
+                Debug.Log(item.ToString());
                 if(item.name == gamedata.GameName)
-                {
-                    Destroy(item.gameObject);
-                }
+                   Destroy(item);
             }
         });
 
@@ -96,24 +96,30 @@ public class GameList : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
+
     }
 
     public async Task InvokeLobbiesAsync()
     {
         if (SignalR.Instance.Connected)
         {
-           await SignalR.Instance.Connection.InvokeAsync("getLobbies");
+            await SignalR.Instance.Connection.InvokeAsync("getLobbies");
         }
 
     }
 
     public async void onJoinClick(GameData gamedata)
     {
-        Debug.Log("clicked name: " + gamedata.GameName + " id:" + gamedata.Id );
+        Debug.Log("clicked name: " + gamedata.GameName + " id:" + gamedata.Id);
         if (SignalR.Instance.Connected)
         {
-            await SignalR.Instance.Connection.InvokeAsync("CreateLobby", Self.Instance.Name);
+            launchmenu.SetActive(true);
+            SignalR.Instance.GameId = gamedata.Id;
+            await SignalR.Instance.Connection.InvokeAsync("addParticipant",gamedata.Id, Self.Instance.Name);
+            await SignalRGame.Instance.Connection.InvokeAsync("AddToGroup",gamedata.Id);
+            gamelist.SetActive(false);
+            
+
         }
     }
 }
