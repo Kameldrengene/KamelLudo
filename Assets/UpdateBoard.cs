@@ -15,7 +15,11 @@ public class UpdateBoard : MonoBehaviour
     private List<Vector3> pVector = Board.locations;
     private Button rollButton;
     private List<Button> buttonPiece = new List<Button>();
-   
+    private List<Piece> currPlayerPiece = new List<Piece>();
+    private int roll;
+    private int legalMoves = 0;
+
+
 
     // Start is called before the first frame update
     async void Start()
@@ -55,9 +59,10 @@ public class UpdateBoard : MonoBehaviour
     {
         //UpdateDeadPieces();
         //UpdatePiecesPosition();
-        Debug.Log("Roll: " + Dice.Instance.roll());
+        roll = Dice.Instance.roll();
+        Debug.Log("Roll: " + roll);
         rollButton = GameObject.Find("Roll").GetComponent<Button>();
-        List<Piece> currPlayerPiece = new List<Piece>();
+        currPlayerPiece.Clear();
         //TODO: Get player color instead of piececolor blue <-----
         foreach(Piece p in pieces)
         {
@@ -70,50 +75,64 @@ public class UpdateBoard : MonoBehaviour
         for(int i = 1; i < 5; i++)
         {
             buttonPiece.Add(GameObject.Find("P" + i.ToString()).GetComponent<Button>());
-            buttonPiece[i - 1].enabled = false;
-            buttonPiece[i - 1].interactable = false;
         }
-        rollButton.enabled = false;
-        rollButton.interactable = false;
+        
+        int it = 0;
         foreach(Button b in buttonPiece)
         {
-            b.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
-            b.enabled = true;
-            b.interactable = true;
+            
+            if (currPlayerPiece[it].isMoveable(roll))
+            {
+                
+                legalMoves++;
+                b.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+                b.enabled = true;
+                b.interactable = true;
+                rollButton.enabled = false;
+                rollButton.interactable = false;
+            }
+            else
+            {
+                b.GetComponent<Image>().color = new Color32(255, 255, 255, 0);
+                b.enabled = false;
+                b.interactable = false;
+            }
+            it++;
         }
 
     }
 
-    public void onPieceClick()
+    public void onPieceClick(int p)
     {
-        foreach (Button b in buttonPiece)
+        if(currPlayerPiece[p].isMoveable(roll))
         {
-            b.GetComponent<Image>().color = new Color32(255, 255, 255, 0);
-            b.enabled = false;
-            b.interactable = false;
+            foreach (Button b in buttonPiece)
+            {
+                b.GetComponent<Image>().color = new Color32(255, 255, 255, 0);
+                b.enabled = false;
+                b.interactable = false;
+            }
+            rollButton.enabled = true;
+            rollButton.interactable = true;
+            if (!currPlayerPiece[p].isInPlay)
+            {
+                currPlayerPiece[p].isInPlay = true;
+                UpdatePiecesPosition(currPlayerPiece[p]);
+            }
         }
-        rollButton.enabled = true;
-        rollButton.interactable = true;
+        
+
     }
 
-    private int tick = 0;
-    private void UpdatePiecesPosition()
+    private void UpdatePiecesPosition(Piece p)
     {
-        if (tick == 0)
-        {
-            pieces[0].field = CreateFields.Instance.getStart(pieces[0].getPieceColor());
-            Vector3 pos = pieces[0].field.field.transform.position;
-            pieces[0].pieceObject.transform.position = new Vector3(pos[0], pos[1], pieces[0].pieceObject.transform.position[2]);
-            tick++;
-            Debug.Log("pos: " + pos);
-        }
-        else
-        {
-            Debug.Log("Piece location updated");
-            pieces[0].pieceObject.transform.position = pVector[0];
-            tick = 0;
-        }
-        Debug.Log("pos T: " + pVector[0]);
+
+        p.field = CreateFields.Instance.getStart(p.getPieceColor());
+        Vector3 pos = p.field.field.transform.position;
+        p.pieceObject.transform.position = new Vector3(pos[0], pos[1], p.pieceObject.transform.position[2]);
+        Debug.Log("pos: " + pos);
+
+
 
     }
 

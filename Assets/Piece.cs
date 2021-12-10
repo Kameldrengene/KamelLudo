@@ -17,8 +17,8 @@ public abstract class Piece
     public Field  field{ get; set; }
     protected Player owner;
     public int pieceID { get; set; }
-    private bool isInPlay { get; set; }
-    private bool isDone { get; set; }
+    public bool isInPlay { get; set; }
+    public bool isDone { get; set; }
     protected Piece(GameObject pieceObject, int id){
         this.pieceObject = pieceObject;
         this.pieceID = id;

@@ -19,6 +19,6 @@ public class Dice
     public int roll()
     {
         Random random = new Random();
-        return random.Next(1,6);
+        return random.Next(1,7);
     }
 }
