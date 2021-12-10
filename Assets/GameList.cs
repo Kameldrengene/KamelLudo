@@ -12,17 +12,28 @@ public class GameList : MonoBehaviour
     public GameObject gamelist;
     public GameObject listItemObj;
     public Transform lobbyListHolder;
+    public List<GameData> lobbiesFromServer = new List<GameData>();
     public List<GameData> ListLobbies { get; set; }
     public List<GameObject> Lobbies = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
+        if (SignalR.Instance.Connected)
+        {
+            SignalR.Instance.Connection.On<List<GameData>>("ReceiveLobbies", (lobbies) =>
+        {
+            Debug.Log("im here");
+            Debug.Log("number of " + lobbiesFromServer.Count);
+            Debug.Log("Lobbies: " + lobbies.Count);
 
-        SignalR.Instance.Connection.On<List<GameData>>("ReceiveLobbies", (lobbies) =>
+            foreach (var item in lobbies)
             {
-                Debug.Log("im here");
-                Debug.Log("Lobbies: " + lobbies.Count);
-                foreach (var item in lobbies)
+
+                if (GameObject.Find(item.GameName))
+                {
+
+                }
+                else
                 {
                     GameObject lobby = Instantiate(listItemObj, lobbyListHolder);
                     lobby.name = item.GameName;
@@ -41,44 +52,61 @@ public class GameList : MonoBehaviour
                     Debug.Log("particia " + item.Participants.Count.ToString());
                     joinbtn.onClick.AddListener(() => onJoinClick(item));
                     Lobbies.Add(lobby);
+                    lobbiesFromServer.Add(item);
+                }
+            }
+        });
+
+            SignalR.Instance.Connection.On<GameData>("RecieveUpdatedGame", (result) =>
+            {
+                Debug.Log("updated participants " + result.Participants.Count);
+                GameObject game = GameObject.Find(result.GameName);
+                TMP_Text[] texts = game.GetComponentsInChildren<TMP_Text>();
+                if (result.Participants.Count == 0)
+                {
+                    texts[2].text = "ingen";
+                }
+                else
+                {
+                    texts[2].text = result.Participants.Count.ToString();
                 }
             });
 
-        SignalR.Instance.Connection.On<GameData>("ReceiveGame", (game) =>
-        {
-            Debug.Log("received game");
-            GameObject lobby = Instantiate(listItemObj, lobbyListHolder);
-            lobby.name = game.GameName;
-            Button joinbtn = lobby.GetComponentInChildren<Button>();
-            TMP_Text[] texts = lobby.GetComponentsInChildren<TMP_Text>();
-            texts[0].text = game.Leader.Name;
-            texts[1].text = game.GameName;
-            if (game.Participants.Count == 0)
+            SignalR.Instance.Connection.On<GameData>("ReceiveGame", (game) =>
             {
-                texts[2].text = "ingen";
-            }
-            else
+                Debug.Log("received game");
+                GameObject lobby = Instantiate(listItemObj, lobbyListHolder);
+                lobby.name = game.GameName;
+                Button joinbtn = lobby.GetComponentInChildren<Button>();
+                TMP_Text[] texts = lobby.GetComponentsInChildren<TMP_Text>();
+                texts[0].text = game.Leader.Name;
+                texts[1].text = game.GameName;
+                if (game.Participants.Count == 0)
+                {
+                    texts[2].text = "ingen";
+                }
+                else
+                {
+                    texts[2].text = game.Participants.Count.ToString();
+                }
+                Debug.Log("particia " + game.Participants.Count.ToString());
+                joinbtn.onClick.AddListener(() => onJoinClick(game));
+                Lobbies.Add(lobby);
+                lobbiesFromServer.Add(game);
+            });
+
+            SignalR.Instance.Connection.On<GameData>("RemoveGame", (gamedata) =>
             {
-                texts[2].text = game.Participants.Count.ToString();
-            }
-            Debug.Log("particia " + game.Participants.Count.ToString());
-            joinbtn.onClick.AddListener(() => onJoinClick(game));
-            Lobbies.Add(lobby);
+                Debug.Log("remove game " + gamedata.GameName);
 
-        });
-
-        SignalR.Instance.Connection.On<GameData>("RemoveGame", (gamedata) =>
-        {
-            Debug.Log("remove game " + gamedata.GameName);
-
-            foreach (GameObject item in Lobbies)
-            {
-                Debug.Log(item.ToString());
-                if(item.name == gamedata.GameName)
-                   Destroy(item);
-            }
-        });
-
+                foreach (GameObject item in Lobbies)
+                {
+                    Debug.Log(item.ToString());
+                    if (item.name == gamedata.GameName)
+                        Destroy(item);
+                }
+            });
+        }
 
         ArrayList arlist = new ArrayList()
                         {

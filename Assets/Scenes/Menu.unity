@@ -4792,7 +4792,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 717664753}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ListLobbies, Assembly-CSharp
         m_MethodName: InvokeLobbiesAsync
         m_Mode: 1
@@ -7026,6 +7026,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 673118367}
+  - component: {fileID: 673118368}
   m_Layer: 5
   m_Name: GameListMenu
   m_TagString: Untagged
@@ -7056,6 +7057,18 @@ RectTransform:
   m_AnchoredPosition: {x: -1.3199, y: 3.9598}
   m_SizeDelta: {x: 551.421, y: 474.8642}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &673118368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673118366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d932fe58c1b76c1479dcfd87909602db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &673600730
 GameObject:
   m_ObjectHideFlags: 0
@@ -7581,7 +7594,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 717664752}
-  - component: {fileID: 717664753}
   m_Layer: 5
   m_Name: SelectMenu
   m_TagString: Untagged
@@ -7611,18 +7623,6 @@ RectTransform:
   m_AnchoredPosition: {x: -1.3199, y: 3.9598}
   m_SizeDelta: {x: 551.421, y: 474.8642}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &717664753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 717664751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d932fe58c1b76c1479dcfd87909602db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &731062712
 GameObject:
   m_ObjectHideFlags: 0

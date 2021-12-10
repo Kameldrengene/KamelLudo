@@ -40,7 +40,6 @@ public class LaunchOwnMenu : MonoBehaviour
                 if (!gameData.Leader.Name.Contains(Self.Instance.Name))
                 {
                     Debug.Log("kick participant" + gamedata.GameName);
-                    Destroy(selectMenu);
                     
                     selectMenu.SetActive(true);
                     launchmenu.SetActive(false);
@@ -112,16 +111,18 @@ public class LaunchOwnMenu : MonoBehaviour
 
     public async void YesOnClick()
     {
-        if (gameData.Leader.Name.Equals(Self.Instance.Name))
+        if (SignalR.Instance.Connected)
         {
-            Debug.Log("deleting game" + gameId);
-            await SignalR.Instance.Connection.InvokeAsync("deleteGame", gameId);
+            if (gameData.Leader.Name.Equals(Self.Instance.Name))
+            {
+                Debug.Log("deleting game" + gameId);
+                await SignalR.Instance.Connection.InvokeAsync("deleteGame", gameId);
+            }
+            if (!gameData.Leader.Name.Equals(Self.Instance.Name))
+            {
+                Debug.Log("Removing participant " + Self.Instance.Name);
+                await SignalR.Instance.Connection.InvokeAsync("RemoveParticipant", gameId, Self.Instance.Name);
+            }
         }
-        if (!gameData.Leader.Name.Equals(Self.Instance.Name))
-        {
-            Debug.Log("Removing participant " + Self.Instance.Name);
-            await SignalR.Instance.Connection.InvokeAsync("RemoveParticipant", gameId, Self.Instance.Name);
-        }
-
     }
 }

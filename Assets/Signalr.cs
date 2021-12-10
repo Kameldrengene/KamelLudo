@@ -43,6 +43,7 @@ public class SignalR
         {
             Debug.Log(ex);
             this.Connected = false;
+
         }
     }
 
