@@ -516,8 +516,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3dca2ec6df74534ebcbe991f7ec8175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  launchmenu: {fileID: 218181800}
+  gamelist: {fileID: 673118366}
   listItemObj: {fileID: 3081087526711329156, guid: 78d685bbd10cd70449514d2cb3d828af, type: 3}
   lobbyListHolder: {fileID: 46297524}
+  Lobbies: []
 --- !u!1 &50217784
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,7 +1282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &83494596
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1847,6 +1850,7 @@ MonoBehaviour:
   leader: {fileID: 710692856}
   playerList: {fileID: 656814201}
   gameId: 
+  mybutton: {fileID: 39943762}
 --- !u!1 &225483334
 GameObject:
   m_ObjectHideFlags: 0
@@ -5388,8 +5392,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3dca2ec6df74534ebcbe991f7ec8175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  launchmenu: {fileID: 0}
+  gamelist: {fileID: 0}
   listItemObj: {fileID: 5261040537033635550, guid: 51b2950d1ea92fc4398af4c4c602f4cb, type: 3}
   lobbyListHolder: {fileID: 558366563}
+  Lobbies: []
 --- !u!1 &559053259
 GameObject:
   m_ObjectHideFlags: 0
@@ -6827,10 +6834,10 @@ RectTransform:
   m_Father: {fileID: 218181801}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0018920898, y: -36.259186}
-  m_SizeDelta: {x: -62.25, y: -305.7687}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 14.5, y: -37.5}
+  m_SizeDelta: {x: 509, y: 201.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &656814201
 MonoBehaviour:
@@ -8002,7 +8009,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 218181802}
         m_TargetAssemblyTypeName: LaunchOwnMenu, Assembly-CSharp
-        m_MethodName: deleteGame
+        m_MethodName: YesOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11811,7 +11818,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1467912161
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15272,7 +15279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400002, guid: 053194f778b93f94c864c5aebd674d4a, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 22400002, guid: 053194f778b93f94c864c5aebd674d4a, type: 3}
       propertyPath: m_AnchorMax.x
