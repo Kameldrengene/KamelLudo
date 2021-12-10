@@ -78,6 +78,7 @@ public class UpdateBoard : MonoBehaviour
     private void updateGame(GameData game)
     {
         tt.text = "Turn: " + game.Game.CurrentPlayer.ToString();
+        rt.text = "Roll: " + game.Game.Roll;
     }
 
     public void LoadGameObjects()
