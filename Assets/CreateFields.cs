@@ -134,6 +134,7 @@ public class CreateFields : MonoBehaviour
                     {
                         field = new GlobusField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(255, 0, 255, 0);
+                        
                     }
                     else if (j == 4 && k == 2)//Globus and field
                     {
@@ -155,6 +156,7 @@ public class CreateFields : MonoBehaviour
                         field = new NormalField(cube);
                         cube.GetComponent<Renderer>().material.color = new Color32(0, 255, 0, 0);
                     }
+                    cube.GetComponent<Renderer>().enabled = false;
                     fieldList[i].Add(field);
                 }
             }            

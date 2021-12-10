@@ -12,13 +12,12 @@ public class UpdateBoard : MonoBehaviour
 
     private List<int> piecesAlive = new List<int> { 4, 4, 4, 4 };
     public List<Piece> pieces = Board.pieces;
-    private List<Vector3> pVector = Board.locations;
     private Button rollButton;
     private List<Button> buttonPiece = new List<Button>();
     private List<Piece> currPlayerPiece = new List<Piece>();
     private int roll;
     private int legalMoves = 0;
-
+    private GameObject turnText;
 
 
     // Start is called before the first frame update
@@ -55,11 +54,15 @@ public class UpdateBoard : MonoBehaviour
     }
 
 
-    public void onRollClick()
+    public async void OnRollClick()
     {
         //UpdateDeadPieces();
         //UpdatePiecesPosition();
+        turnText = GameObject.Find("turntext");
+        TextMesh t = turnText.GetComponent<TextMesh>();
+        t.text = "Turn: Blue";
         roll = Dice.Instance.roll();
+        legalMoves = 0;
         Debug.Log("Roll: " + roll);
         rollButton = GameObject.Find("Roll").GetComponent<Button>();
         currPlayerPiece.Clear();
@@ -99,28 +102,47 @@ public class UpdateBoard : MonoBehaviour
             }
             it++;
         }
+        if(legalMoves <= 0)
+        {
+            //Send choice to server with roll and legalMoves;
+            await TakeTurn(roll, legalMoves);
+        }
 
     }
 
-    public void onPieceClick(int p)
+    private async Task TakeTurn(int r, int lm)
+    {
+        if (SignalR.Instance.Connected)
+        {
+            await SignalR.Instance.Connection.InvokeAsync("SendChoice", Self.Instance.Name, r, lm);
+        }
+        else
+        {
+            Debug.Log("Connection Lost");
+        }
+    }
+
+    public void OnPieceClick(int p)
     {
         if(currPlayerPiece[p].isMoveable(roll))
         {
-            foreach (Button b in buttonPiece)
-            {
-                b.GetComponent<Image>().color = new Color32(255, 255, 255, 0);
-                b.enabled = false;
-                b.interactable = false;
-            }
-            rollButton.enabled = true;
-            rollButton.interactable = true;
+            
             if (!currPlayerPiece[p].isInPlay)
             {
                 currPlayerPiece[p].isInPlay = true;
                 UpdatePiecesPosition(currPlayerPiece[p]);
             }
         }
-        
+        foreach (Button b in buttonPiece)
+        {
+            b.GetComponent<Image>().color = new Color32(255, 255, 255, 0);
+            b.enabled = false;
+            b.interactable = false;
+        }
+        rollButton.enabled = true;
+        rollButton.interactable = true;
+
+
 
     }
 
