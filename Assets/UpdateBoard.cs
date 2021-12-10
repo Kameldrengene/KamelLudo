@@ -89,7 +89,7 @@ public class UpdateBoard : MonoBehaviour
         {
 
             //If Piece is not in play and is not done
-            if (!game.Game.Pieces[i].IsInPlay && !game.Game.Pieces[i].IsDone)
+            /*if (!game.Game.Pieces[i].IsInPlay && !game.Game.Pieces[i].IsDone)
             {
                 pieces[i].pieceObject.transform.position = oldLocation[i]; //Set to home position
             } else if(game.Game.Pieces[i].IsDone) //If piece is done, remove it
@@ -99,7 +99,7 @@ public class UpdateBoard : MonoBehaviour
             else if(game.Game.Pieces[i].IsInPlay) //If piece is in play, then set to fieldID
             {
                 pieces[i].pieceObject.transform.position = fields[game.Game.Pieces[i].FieldQuadrant][game.Game.Pieces[i].FieldID].field.transform.position;
-            }
+            }*/
         }
     }
 
