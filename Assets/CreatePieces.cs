@@ -81,7 +81,6 @@ public class CreatePieces : MonoBehaviour
                 text.transform.parent = cylinder.transform;
                 pieces.Add(newPiece);
                 locations.Add(newPiece.pieceObject.transform.position);
-
             }
         }
         

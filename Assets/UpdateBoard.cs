@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpdateBoard : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class UpdateBoard : MonoBehaviour
     private List<int> piecesAlive = new List<int> { 4, 4, 4, 4 };
     public List<Piece> pieces = Board.pieces;
     private List<Vector3> pVector = Board.locations;
-
+    private Button rollButton;
+    private List<Button> buttonPiece = new List<Button>();
    
 
     // Start is called before the first frame update
@@ -29,13 +31,12 @@ public class UpdateBoard : MonoBehaviour
         Debug.Log("SignalR Game Connected: " + SignalRGame.Instance.Connected);
         
         Debug.Log("Game loaded");
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     private IEnumerator UpdatePiecesFrame()
@@ -50,10 +51,49 @@ public class UpdateBoard : MonoBehaviour
     }
 
 
-    public void onBlueClick()
+    public void onRollClick()
     {
         //UpdateDeadPieces();
         //UpdatePiecesPosition();
+        Debug.Log("Roll: " + Dice.Instance.roll());
+        rollButton = GameObject.Find("Roll").GetComponent<Button>();
+        List<Piece> currPlayerPiece = new List<Piece>();
+        //TODO: Get player color instead of piececolor blue <-----
+        foreach(Piece p in pieces)
+        {
+            if(p.getPieceColor() == PieceColor.blue)
+            {
+                currPlayerPiece.Add(p);
+            }
+        }
+        buttonPiece.Clear();
+        for(int i = 1; i < 5; i++)
+        {
+            buttonPiece.Add(GameObject.Find("P" + i.ToString()).GetComponent<Button>());
+            buttonPiece[i - 1].enabled = false;
+            buttonPiece[i - 1].interactable = false;
+        }
+        rollButton.enabled = false;
+        rollButton.interactable = false;
+        foreach(Button b in buttonPiece)
+        {
+            b.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            b.enabled = true;
+            b.interactable = true;
+        }
+
+    }
+
+    public void onPieceClick()
+    {
+        foreach (Button b in buttonPiece)
+        {
+            b.GetComponent<Image>().color = new Color32(255, 255, 255, 0);
+            b.enabled = false;
+            b.interactable = false;
+        }
+        rollButton.enabled = true;
+        rollButton.interactable = true;
     }
 
     private int tick = 0;

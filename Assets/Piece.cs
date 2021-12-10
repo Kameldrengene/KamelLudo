@@ -17,14 +17,26 @@ public abstract class Piece
     public Field  field{ get; set; }
     protected Player owner;
     public int pieceID { get; set; }
-
+    private bool isInPlay { get; set; }
+    private bool isDone { get; set; }
     protected Piece(GameObject pieceObject, int id){
         this.pieceObject = pieceObject;
         this.pieceID = id;
+        this.isDone = false;
+        this.isInPlay = false;
     }
 
     public PieceColor getPieceColor(){
         return pieceColor;
+    }
+
+    public bool isMoveable(int roll)
+    {
+        if (roll == 6 && !isDone)
+            return true;
+        else if (!isInPlay || isDone)
+            return false;
+        return true;
     }
 }
 
