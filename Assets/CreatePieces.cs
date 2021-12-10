@@ -76,7 +76,7 @@ public class CreatePieces : MonoBehaviour
                 }
                 GameObject text = new GameObject();
                 TextMesh t = text.AddComponent<TextMesh>();
-                t.text = j+1+"";
+                t.text = newPiece.pieceID+"";
                 t.fontSize = 20;
                 text.GetComponent<Renderer>().material.color = Color.black;
                 text.transform.position = new Vector3(newPos[0]-0.5f,newPos[1],newPos[2]+1f);
