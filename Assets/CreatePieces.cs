@@ -74,6 +74,13 @@ public class CreatePieces : MonoBehaviour
                     newPiece = new RedPiece(cylinder, j + 1);
 
                 }
+                GameObject text = new GameObject();
+                TextMesh t = text.AddComponent<TextMesh>();
+                t.text = j+1+"";
+                t.fontSize = 20;
+                text.GetComponent<Renderer>().material.color = Color.black;
+                text.transform.position = new Vector3(newPos[0]-0.5f,newPos[1],newPos[2]+1f);
+                text.transform.parent = cylinder.transform;
                 pieces.Add(newPiece);
                 locations.Add(newPiece.pieceObject.transform.position);
 
