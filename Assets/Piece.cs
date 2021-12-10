@@ -4,10 +4,10 @@ using UnityEngine;
 
 public enum PieceColor
 {
-    blue = 0,
-    yellow = 1,
-    green = 2,
-    red = 3
+    blue = 3,
+    yellow = 0,
+    green = 1,
+    red = 2
 }
 
 public abstract class Piece

@@ -8,19 +8,15 @@ public class MainMenu : MonoBehaviour
 {
     public Button playButton;
     public Button playNextButton;
+    public Button playOptionButton;
     private void Start()
     {
-        playButton.interactable = false;
-        playNextButton.interactable = false;
+      
     }
 
     private void Update()
     {
-        if (Singleton.Instance.Connected)
-        {
-            playButton.interactable = true;
-            playNextButton.interactable = true;
-        }
+
     }
     public void PlayGame()
     {
