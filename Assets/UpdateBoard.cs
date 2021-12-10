@@ -19,23 +19,32 @@ public class UpdateBoard : MonoBehaviour
     private int legalMoves = 0;
     private GameObject turnText;
     private GameObject rollText;
+    private GameObject gameText;
     private TextMesh tt;
     private TextMesh rt;
+    private TextMesh gt;
 
 
     // Start is called before the first frame update
     async void Start()
     {
+        SignalRGame.Instance.Connection.On<GameData>("UpdateGame", (game) =>
+        {
+            Debug.Log("Board hello: From Board data caller");
+        });
         SignalRGame.Instance.Connection.On<GameData>("GetGame", (game) =>
         {
             Debug.Log("Game name: " + game.GameName);
             Debug.Log("Game ID: " + game.Id);
+            LoadGameObjects();
+            gt.text = "Game: "+game.GameName;
         });
         await SignalRGame.Instance.Connection.InvokeAsync("GetGame", SignalRGame.Instance.Gameid);
+        
+        await SignalRGame.Instance.Connection.InvokeAsync("UpdateGame", SignalRGame.Instance.Gameid, "1", "2");
         Debug.Log(SignalRGame.Instance.Gameid);
         Debug.Log("START LOADED!!!!");
         Debug.Log("SignalR Game Connected: " + SignalRGame.Instance.Connected);
-        
         Debug.Log("Game loaded");
         
     }
@@ -63,6 +72,9 @@ public class UpdateBoard : MonoBehaviour
         tt = turnText.GetComponent<TextMesh>();
         rollText = GameObject.Find("rollText");
         rt = rollText.GetComponent<TextMesh>();
+        rt.text = "Last Roll: 0";
+        gameText = GameObject.Find("gameText");
+        gt = gameText.GetComponent<TextMesh>();
         rollButton = GameObject.Find("Roll").GetComponent<Button>();
     }
 
@@ -73,7 +85,7 @@ public class UpdateBoard : MonoBehaviour
 
         LoadGameObjects();
         roll = Dice.Instance.roll();
-        rt.text = "Roll: " + roll;
+        rt.text = "Last Roll: " + roll;
         tt.text = "Turn: Blue";
         legalMoves = 0;
         Debug.Log("Roll: " + roll);
@@ -117,7 +129,7 @@ public class UpdateBoard : MonoBehaviour
         if(legalMoves <= 0)
         {
             //Send choice to server with roll and legalMoves;
-            await TakeTurn(roll, legalMoves);
+            //await TakeTurn(roll, legalMoves);
         }
 
     }
@@ -133,6 +145,9 @@ public class UpdateBoard : MonoBehaviour
             Debug.Log("Connection Lost");
         }
     }
+
+       
+    
 
     public void OnPieceClick(int p)
     {
