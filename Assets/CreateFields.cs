@@ -10,7 +10,6 @@ public class CreateFields : MonoBehaviour
     private float defaultY = 4.33f;
     private float defaultZ = -0.52f;
     private List<Field>[] fieldList = Board.fieldList;
-    private List<Field>[] dasdasd;
     private static CreateFields instance;
 
     public static CreateFields Instance
@@ -134,32 +133,32 @@ public class CreateFields : MonoBehaviour
                     if (j == 3 && k == 0) //Globus
                     {
                         field = new GlobusField(cube);
-                        cube.GetComponent<Renderer>().material.color = new Color32(255, 0, 255, 255);
+                        cube.GetComponent<Renderer>().material.color = new Color32(255, 0, 255, 0);
                     }
                     else if (j == 4 && k == 2)//Globus and field
                     {
                         field = new SafeHomeField(cube);
-                        cube.GetComponent<Renderer>().material.color = new Color32(255, 100, 255, 255);
+                        cube.GetComponent<Renderer>().material.color = new Color32(255, 100, 255, 0);
                     }
                     else if (j == 5 && k == 1) //Entrance
                     {
                         field = new EntranceField(cube);
-                        cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 255);
+                        cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 0);
                     }
                     else if (j == 0 && k == 0) //Star
                     {
                         field = new StarField(cube);
-                        cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 255);
+                        cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 0);
                     }
                     else //Default
                     {
                         field = new NormalField(cube);
-                        cube.GetComponent<Renderer>().material.color = new Color32(0, 255, 0, 255);
+                        cube.GetComponent<Renderer>().material.color = new Color32(0, 255, 0, 0);
                     }
                     fieldList[i].Add(field);
                 }
             }            
         }
-        AssignNextFields();
+        //AssignNextFields();
     }
 }

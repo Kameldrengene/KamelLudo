@@ -66,7 +66,7 @@ public class UpdateBoard : MonoBehaviour
     {
         //UpdateDeadPieces();
         pVector = getAllPos();
-        UpdatePiecesPosition();
+        //UpdatePiecesPosition();
     }
 
     private int tick = 0;
