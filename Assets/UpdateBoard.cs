@@ -62,9 +62,15 @@ public class UpdateBoard : MonoBehaviour
             {
                 UpdateData.Instance.Players.Add(game.Participants[i]);
             }
+            int it = 0;
             foreach(Player p in UpdateData.Instance.Players)
             {
                 Debug.Log("Players: " + p.Name);
+                if (Self.Instance.Name.Equals(p.Name))
+                {
+                    UpdateData.Instance.PlayerIndex = it;
+                }
+                it++;
             }
             gt.text = "Game: " + game.GameName;
 
@@ -82,6 +88,36 @@ public class UpdateBoard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    }
+
+    public void increasePlayerIndex()
+    {
+        LoadGameObjects();
+
+        UpdateData.Instance.PlayerIndex = (UpdateData.Instance.PlayerIndex + 1) % 4;
+        Button turnB;
+        turnB = GameObject.Find("TurnB").GetComponent<Button>();
+        Text text = turnB.GetComponent<Text>();
+        switch ((int)UpdateData.Instance.GData.Game.CurrentPlayer)
+        {
+            case 0:
+                text.color = Color.yellow;
+                break;
+            case 1:
+                text.color = Color.green;
+                break;
+            case 2:
+                text.color = Color.red;
+                break;
+            case 3:
+                text.color = Color.blue;
+                break;
+            default:
+                return;
+                break;
+        }
+        checkMyTurn();
+
     }
 
     private IEnumerator UpdatePiecesFrame()
@@ -125,27 +161,15 @@ public class UpdateBoard : MonoBehaviour
     }
 
     public void checkMyTurn() {
-        int it = 0;
-        Debug.Log("LocalPlayer: " + Self.Instance.Name);
-        foreach (Player p in UpdateData.Instance.Players)
+        if((PieceColor)UpdateData.Instance.PlayerIndex == UpdateData.Instance.GData.Game.CurrentPlayer)
         {
-            if (p.Name.Equals(Self.Instance.Name))
-            {
-                Debug.Log("LocalPlayer Found in PlayerList!");
-                if ((PieceColor)it == UpdateData.Instance.GData.Game.CurrentPlayer)
-                {
-                    Debug.Log("LocalPlayer is: "+(PieceColor)it);
-                    setRollButton(true);
-                    return;
-                }
-                
-            }
-            else
-            {
-                setRollButton(false);
-            }
-            it++;
+            setRollButton(true);
         }
+        else
+        {
+            setRollButton(false);
+        }
+        
     }
 
     public void LoadGameObjects()
@@ -161,6 +185,7 @@ public class UpdateBoard : MonoBehaviour
 
     public void setRollButton(bool b)
     {
+        LoadGameObjects();
         rollButton.enabled = b;
         rollButton.interactable = b;
     }
