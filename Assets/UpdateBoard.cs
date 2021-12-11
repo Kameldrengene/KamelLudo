@@ -44,7 +44,8 @@ public class UpdateBoard : MonoBehaviour
             Debug.Log("Board Game Roll: " + game.Game.Roll);
             Debug.Log("Board player: " + game.Game.CurrentPlayer);
             Debug.Log("Piece: " + game.Game.Pieces);
-            updateGame(game);
+            setRollButton(false);
+            updateGame();
             Debug.Log("Board exist: "+game.Game);
             
 
@@ -77,7 +78,6 @@ public class UpdateBoard : MonoBehaviour
         Debug.Log("START LOADED!!!!");
         Debug.Log("SignalR Game Connected: " + SignalRGame.Instance.Connected);
         Debug.Log("Game loaded");
-        
     }
 
     // Update is called once per frame
@@ -96,10 +96,12 @@ public class UpdateBoard : MonoBehaviour
         StartCoroutine(UpdatePiecesFrame());
     }
 
-    private void updateGame(GameData game)
+    private void updateGame()
     {
-        tt.text = "Turn: " + game.Game.CurrentPlayer.ToString();
-        rt.text = "Roll: " + game.Game.Roll;
+        checkMyTurn();
+
+        tt.text = "Turn: " + UpdateData.Instance.GData.Game.CurrentPlayer.ToString();
+        rt.text = "Roll: " + UpdateData.Instance.GData.Game.Roll;
         
         for(int i = 0; i < pData.Count(); i++)
         {
@@ -120,7 +122,31 @@ public class UpdateBoard : MonoBehaviour
                 pieces[i].pieceObject.transform.position = fields[pData[i].FieldQuadrant][pData[i].FieldID].field.transform.position;
             }
         }
-        //if(UpdateData.Instance.GData.Game.CurrentPlayer != localPlayer.)
+        
+    }
+
+    public void checkMyTurn() {
+        int it = 0;
+        Debug.Log("LocalPlayer: " + Self.Instance.Name);
+        foreach (Player p in UpdateData.Instance.Players)
+        {
+            if (p.Name.Equals(Self.Instance.Name))
+            {
+                Debug.Log("LocalPlayer Found in PlayerList!");
+                if ((PieceColor)it == UpdateData.Instance.GData.Game.CurrentPlayer)
+                {
+                    Debug.Log("LocalPlayer is: "+(PieceColor)it);
+                    setRollButton(true);
+                    return;
+                }
+                
+            }
+            else
+            {
+                setRollButton(false);
+            }
+            it++;
+        }
     }
 
     public void LoadGameObjects()
@@ -132,6 +158,21 @@ public class UpdateBoard : MonoBehaviour
         gameText = GameObject.Find("gameText");
         gt = gameText.GetComponent<TextMesh>();
         rollButton = GameObject.Find("Roll").GetComponent<Button>();
+    }
+
+    public void setRollButton(bool b)
+    {
+        rollButton.enabled = b;
+        rollButton.interactable = b;
+    }
+    public void disablePieceButtons()
+    {
+        foreach (Button b in buttonPiece)
+        {
+            b.GetComponent<Image>().color = new Color32(255, 255, 255, 0);
+            b.enabled = false;
+            b.interactable = false;
+        }
     }
 
     public async void OnRollClick()
@@ -174,8 +215,7 @@ public class UpdateBoard : MonoBehaviour
                 b.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
                 b.enabled = true;
                 b.interactable = true;
-                rollButton.enabled = false;
-                rollButton.interactable = false;
+                setRollButton(false);
             }
             else
             {
@@ -213,14 +253,8 @@ public class UpdateBoard : MonoBehaviour
                 currPlayerPiece[p].IsInPlay = true;
             }
         }
-        foreach (Button b in buttonPiece)
-        {
-            b.GetComponent<Image>().color = new Color32(255, 255, 255, 0);
-            b.enabled = false;
-            b.interactable = false;
-        }
-        rollButton.enabled = true;
-        rollButton.interactable = true;
+        disablePieceButtons();
+        setRollButton(true);
         await TakeTurn(roll, legalMoves, p);
 
 
