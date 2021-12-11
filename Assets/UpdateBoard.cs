@@ -95,26 +95,24 @@ public class UpdateBoard : MonoBehaviour
         LoadGameObjects();
 
         UpdateData.Instance.PlayerIndex = (UpdateData.Instance.PlayerIndex + 1) % 4;
-        Button turnB;
-        turnB = GameObject.Find("TurnB").GetComponent<Button>();
-        Text text = turnB.GetComponent<Text>();
-        switch ((int)UpdateData.Instance.GData.Game.CurrentPlayer)
+        Image turnB;
+        turnB = GameObject.Find("TurnB").GetComponent<Image>();
+        switch (UpdateData.Instance.PlayerIndex)
         {
             case 0:
-                text.color = Color.yellow;
+                turnB.color = Color.yellow;
                 break;
             case 1:
-                text.color = Color.green;
+                turnB.color = Color.green;
                 break;
             case 2:
-                text.color = Color.red;
+                turnB.color = Color.red;
                 break;
             case 3:
-                text.color = Color.blue;
+                turnB.color = Color.blue;
                 break;
             default:
                 return;
-                break;
         }
         checkMyTurn();
 
