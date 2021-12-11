@@ -7,6 +7,7 @@ public class UpdateData
     private List<PieceData> _pData;
     private GameData _gData;
     private List<Player> _players = new List<Player>();
+    private int _legalMoves = 0;
     private static UpdateData instance;
     public static UpdateData Instance
     {
@@ -22,4 +23,5 @@ public class UpdateData
     public List<PieceData> PData{ get { return _pData; } set { this._pData = value; } }
     public GameData GData{ get { return _gData; } set { this._gData = value; } }
     public List<Player> Players { get { return _players; } set { this._players = value; } }
+    public int LegalMoves { get { return _legalMoves; } set { this._legalMoves= value; } }
 }

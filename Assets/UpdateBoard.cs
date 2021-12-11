@@ -19,7 +19,6 @@ public class UpdateBoard : MonoBehaviour
     private List<PieceData> currPlayerPiece = new List<PieceData>();
     private List<Field>[] fields = Board.fieldList;
     private int roll;
-    private int legalMoves = 0;
     private GameObject turnText;
     private GameObject rollText;
     private GameObject gameText;
@@ -182,7 +181,7 @@ public class UpdateBoard : MonoBehaviour
 
         LoadGameObjects();
         roll = Dice.Instance.roll();
-        legalMoves = 0;
+        UpdateData.Instance.LegalMoves = 0;
         Debug.Log("Roll: " + roll);
         rt.text = "Roll: " + roll;
         currPlayerPiece.Clear();
@@ -211,7 +210,7 @@ public class UpdateBoard : MonoBehaviour
             {
                 Debug.Log("Moveable piece: " + currPlayerPiece[it].PieceColor + " " + it);
                 Debug.Log("Moveable piece (Playercolor): " + UpdateData.Instance.GData.Game.CurrentPlayer);
-                legalMoves++;
+                UpdateData.Instance.LegalMoves++;
                 b.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
                 b.enabled = true;
                 b.interactable = true;
@@ -225,10 +224,10 @@ public class UpdateBoard : MonoBehaviour
             }
             it++;
         }
-        if (legalMoves <= 0)
+        if (UpdateData.Instance.LegalMoves <= 0)
         {
             //Send choice to server with roll and legalMoves;
-            await TakeTurn(roll, legalMoves, 0);
+            await TakeTurn(roll, UpdateData.Instance.LegalMoves, 0);
         }
 
     }
@@ -255,7 +254,7 @@ public class UpdateBoard : MonoBehaviour
         }
         disablePieceButtons();
         setRollButton(true);
-        await TakeTurn(roll, legalMoves, p);
+        await TakeTurn(roll, UpdateData.Instance.LegalMoves, p);
 
 
     }
