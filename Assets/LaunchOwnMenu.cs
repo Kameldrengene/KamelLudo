@@ -31,11 +31,11 @@ public class LaunchOwnMenu : MonoBehaviour
              });
         }
         
-        if (SignalR.Instance.Connected)
+        if (SignalR.Connected)
         {
             Debug.Log("in launch menu");
 
-            SignalR.Instance.Connection.On<GameData>("RemoveGame", (gamedata) =>
+            SignalR.Connection.On<GameData>("RemoveGame", (gamedata) =>
             {
                 if (!gameData.Leader.Name.Contains(Self.Instance.Name))
                 {
@@ -48,7 +48,7 @@ public class LaunchOwnMenu : MonoBehaviour
                
             });
 
-            SignalR.Instance.Connection.On<GameData>("RecieveUpdatedGame", (game) =>
+            SignalR.Connection.On<GameData>("RecieveUpdatedGame", (game) =>
             {
                 gameName.text = game.GameName;
                 leader.text = game.Leader.Name;
@@ -67,7 +67,7 @@ public class LaunchOwnMenu : MonoBehaviour
                 }
             });
 
-            SignalR.Instance.Connection.On<GameData>("EnterGame", async (game) =>
+            SignalR.Connection.On<GameData>("EnterGame", async (game) =>
             {
                 Debug.Log(game.GameName);
                 this.gameName.text = game.GameName;
@@ -111,17 +111,17 @@ public class LaunchOwnMenu : MonoBehaviour
 
     public async void YesOnClick()
     {
-        if (SignalR.Instance.Connected)
+        if (SignalR.Connected)
         {
             if (gameData.Leader.Name.Equals(Self.Instance.Name))
             {
                 Debug.Log("deleting game" + gameId);
-                await SignalR.Instance.Connection.InvokeAsync("deleteGame", gameId);
+                await SignalR.Connection.InvokeAsync("deleteGame", gameId);
             }
             if (!gameData.Leader.Name.Equals(Self.Instance.Name))
             {
                 Debug.Log("Removing participant " + Self.Instance.Name);
-                await SignalR.Instance.Connection.InvokeAsync("RemoveParticipant", gameId, Self.Instance.Name);
+                await SignalR.Connection.InvokeAsync("RemoveParticipant", gameId, Self.Instance.Name);
             }
         }
     }

@@ -19,14 +19,14 @@ public class Registration : MonoBehaviour
     void Start()
     {
         connectText = GameObject.Find("registerText").GetComponent<Text>();
-        if (SignalR.Instance.Token != null) connectText.text = "you are logged in";
+        if (SignalR.Token != null) connectText.text = "you are logged in";
         else connectText.text = "";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (SignalR.Instance.Token != null)
+        if (SignalR.Token != null)
         {
             this.gameObject.SetActive(false);
             playermenu.SetActive(true);
@@ -54,7 +54,7 @@ public class Registration : MonoBehaviour
             connectText.text = "connection success";
             RestSingleton.Instance._isLoggedIn = true;
             RestSingleton.Instance.token = response;
-            SignalR.Instance.Token = response;
+            SignalR.Token = response;
             Debug.Log("response :" + response);
             Debug.Log("code :" + statusCode);
         }
@@ -66,7 +66,7 @@ public class Registration : MonoBehaviour
     {
         UserName = createplayerEmail.text;
         Password = createplayerPassword.text;
-        string URL = SignalR.Instance.ConnectionString + "/api/player";
+        string URL = SignalR.ConnectionString + "/api/player";
         StartCoroutine(RestSingleton.Instance.PostRegisterData(URL, new LoginPlayer(UserName, Password), GetToken));
     }
 

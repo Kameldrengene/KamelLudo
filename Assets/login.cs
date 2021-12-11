@@ -25,7 +25,7 @@ public class login : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SignalR.Instance.Token!=null)
+        if (SignalR.Token!=null)
         {
             this.gameObject.SetActive(false);   
             playermenu.SetActive(true);
@@ -43,7 +43,7 @@ public class login : MonoBehaviour
             connectText.text = "connection success";
             RestSingleton.Instance._isLoggedIn = true;
             RestSingleton.Instance.token = response;
-            SignalR.Instance.Token = response;
+            SignalR.Token = response;
             Debug.Log("response :" + response);
             Debug.Log("code :" + statusCode);
         }
@@ -74,7 +74,7 @@ public class login : MonoBehaviour
     {
         _username = playerEmail.text;
         _password = playerPassword.text;
-        string URL = SignalR.Instance.ConnectionString + "/api/player/authenticate";
+        string URL = SignalR.ConnectionString + "/api/player/authenticate";
         StartCoroutine(RestSingleton.Instance.PostLoginData(URL, new LoginPlayer(_username, _password), GetToken));
     }
 
