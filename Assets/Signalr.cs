@@ -39,14 +39,19 @@ public class SignalR
     public void EstablishConnection()
     {
         Debug.Log(ConnectionString);
-       
-        _connection = new HubConnectionBuilder().WithUrl(ConnectionString + "/lobbyHub").WithAutomaticReconnect().Build();
-        //_connection.Closed += async (error) =>
-        //{
-        //    await Task.Delay(1000);
-        //    await _connection.StartAsync();
-        //};
-
+        try
+        {
+            _connection = new HubConnectionBuilder().WithUrl(ConnectionString + "/lobbyHub").WithAutomaticReconnect().Build();
+            //_connection.Closed += async (error) =>
+            //{
+            //    await Task.Delay(1000);
+            //    await _connection.StartAsync();
+            //};
+        }catch (Exception ex)
+        {
+            Debug.Log(ex);
+            this.Connected = false;
+        }
         _connection.On<string>("Connected", (connetionid) =>
          {
              Debug.Log(connetionid);
@@ -62,7 +67,7 @@ public class SignalR
         {
             await _connection.StartAsync();
             Connected = true;
-            Debug.Log("Connection started");
+            Debug.Log("Connection started Lobby");
         }catch(Exception ex)
         {
             Debug.Log(ex.Message);

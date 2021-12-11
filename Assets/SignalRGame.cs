@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR.Client;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,19 +34,45 @@ public class SignalRGame
     public HubConnection Connection
     {
         get { return _connection; }
+        set { _connection = value; }
     }
     public void EstablishConnection()
     {
         Debug.Log(ConnectionString);
         try
         {
-            _connection = new HubConnectionBuilder().WithUrl(ConnectionString + "/gameHub").Build();
+            _connection = new HubConnectionBuilder().WithUrl(ConnectionString + "/gameHub").WithAutomaticReconnect().Build();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Debug.Log(ex);
             this.Connected = false;
         }
+        _connection.On<string>("Connected", (connetionid) =>
+        {
+            Debug.Log(connetionid);
+
+        });
+        Connect();
+
+    }
+
+    public async void Connect()
+    {
+
+        try
+        {
+            await _connection.StartAsync();
+            Connected = true;
+            Debug.Log("Connection started Game");
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex.Message);
+        }
+
+
+
     }
 
     public string Token

@@ -5,42 +5,46 @@ using UnityEngine;
 
 public class SignalRGameHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void signalRGameConnect()
     {
-        Debug.Log("Hello World!");
         SignalRGame.Instance.EstablishConnection();
-
-        SignalRGame.Instance.Connection.On<string>("Connected", (connetionid) =>
-        {
-            Debug.Log(connetionid);
-
-        });
-
-        Connect();
     }
+    //// Start is called before the first frame update
+    //void Start()
+    //{
+    //    Debug.Log("Hello World!");
+    //    SignalRGame.Instance.EstablishConnection();
+
+    //    SignalRGame.Instance.Connection.On<string>("Connected", (connetionid) =>
+    //    {
+    //        Debug.Log(connetionid);
+
+    //    });
+
+    //    Connect();
+    //}
 
 
-    private async void Connect()
-    {
-        try
-        {
+    //private async void Connect()
+    //{
+    //    try
+    //    {
 
-            await SignalRGame.Instance.Connection.StartAsync();
-            SignalRGame.Instance.Connected = true;
+    //        await SignalRGame.Instance.Connection.StartAsync();
+    //        SignalRGame.Instance.Connected = true;
 
-            Debug.Log("connection started gamehub");
-        }
-        catch (System.Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
+    //        Debug.Log("connection started gamehub");
+    //    }
+    //    catch (System.Exception ex)
+    //    {
+    //        Debug.Log(ex.Message);
+    //    }
 
-    }
+    //}
 
-    // Update is called once per frame
-    void Update()
-    {
+    //// Update is called once per frame
+    //void Update()
+    //{
         
-    }
+    //}
 }
