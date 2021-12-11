@@ -23,10 +23,10 @@ public class Dice
     }
 }
 
-public class CheatDice: Dice
+public class CheatDice
 {
-    private static Dice instance;
-    public static Dice Instance
+    private static CheatDice instance;
+    public static CheatDice Instance
     {
         get
         {
@@ -40,8 +40,9 @@ public class CheatDice: Dice
     public int roll()
     {
         Random random = new Random();
-        int above = 3;
-        if (random.Next(1, 7) > above) return 6; //50% chance to roll 6
+        int above = 4;
+        int tmp = random.Next(1, 7);
+        if (tmp > above) return 6; //50% chance to roll 6
         return random.Next(1, 7); //50% chance to roll again as normally
     }
 }
