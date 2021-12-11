@@ -22,9 +22,11 @@ public class UpdateBoard : MonoBehaviour
     private GameObject turnText;
     private GameObject rollText;
     private GameObject gameText;
+    private GameObject gameOverText;
     private TextMesh tt;
     private TextMesh rt;
     private TextMesh gt;
+    private TextMesh got;
     private List<PieceData> pData;
 
 
@@ -32,6 +34,7 @@ public class UpdateBoard : MonoBehaviour
     async void Start()
     {
         LoadGameObjects();
+        gameOverText.GetComponent<Renderer>().enabled = false;
         SignalRGame.Instance.Connection.On<GameData>("UpdateGame", (game) =>
         {
             Debug.Log("Board hello: From Board data caller");
@@ -132,6 +135,7 @@ public class UpdateBoard : MonoBehaviour
     private void updateGame()
     {
         checkMyTurn();
+        gameOverText.GetComponent<Renderer>().enabled = UpdateData.Instance.GData.Game.IsWon;
 
         tt.text = "Turn: " + UpdateData.Instance.GData.Game.CurrentPlayer.ToString();
         rt.text = "Roll: " + UpdateData.Instance.GData.Game.Roll;
@@ -188,6 +192,8 @@ public class UpdateBoard : MonoBehaviour
         rt = rollText.GetComponent<TextMesh>();
         gameText = GameObject.Find("gameText");
         gt = gameText.GetComponent<TextMesh>();
+        gameOverText = GameObject.Find("gameOverText");
+        got = gameOverText.GetComponent<TextMesh>();
         rollButton = GameObject.Find("Roll").GetComponent<Button>();
     }
 
