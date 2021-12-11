@@ -19,7 +19,6 @@ public class UpdateBoard : MonoBehaviour
     private List<PieceData> currPlayerPiece = new List<PieceData>();
     private List<Field>[] fields = Board.fieldList;
     private int roll;
-    private int legalMoves = 0;
     private GameObject turnText;
     private GameObject rollText;
     private GameObject gameText;
@@ -44,7 +43,8 @@ public class UpdateBoard : MonoBehaviour
             Debug.Log("Board Game Roll: " + game.Game.Roll);
             Debug.Log("Board player: " + game.Game.CurrentPlayer);
             Debug.Log("Piece: " + game.Game.Pieces);
-            updateGame(game);
+            setRollButton(false);
+            updateGame();
             Debug.Log("Board exist: "+game.Game);
             
 
@@ -62,9 +62,15 @@ public class UpdateBoard : MonoBehaviour
             {
                 UpdateData.Instance.Players.Add(game.Participants[i]);
             }
+            int it = 0;
             foreach(Player p in UpdateData.Instance.Players)
             {
                 Debug.Log("Players: " + p.Name);
+                if (Self.Instance.Name.Equals(p.Name))
+                {
+                    UpdateData.Instance.PlayerIndex = it;
+                }
+                it++;
             }
             gt.text = "Game: " + game.GameName;
 
@@ -77,12 +83,39 @@ public class UpdateBoard : MonoBehaviour
         Debug.Log("START LOADED!!!!");
         Debug.Log("SignalR Game Connected: " + SignalRGame.Instance.Connected);
         Debug.Log("Game loaded");
-        
     }
 
     // Update is called once per frame
     void Update()
     {
+    }
+
+    public void increasePlayerIndex()
+    {
+        LoadGameObjects();
+
+        UpdateData.Instance.PlayerIndex = (UpdateData.Instance.PlayerIndex + 1) % 4;
+        Image turnB;
+        turnB = GameObject.Find("TurnB").GetComponent<Image>();
+        switch (UpdateData.Instance.PlayerIndex)
+        {
+            case 0:
+                turnB.color = Color.yellow;
+                break;
+            case 1:
+                turnB.color = Color.green;
+                break;
+            case 2:
+                turnB.color = Color.red;
+                break;
+            case 3:
+                turnB.color = Color.blue;
+                break;
+            default:
+                return;
+        }
+        checkMyTurn();
+
     }
 
     private IEnumerator UpdatePiecesFrame()
@@ -96,10 +129,12 @@ public class UpdateBoard : MonoBehaviour
         StartCoroutine(UpdatePiecesFrame());
     }
 
-    private void updateGame(GameData game)
+    private void updateGame()
     {
-        tt.text = "Turn: " + game.Game.CurrentPlayer.ToString();
-        rt.text = "Roll: " + game.Game.Roll;
+        checkMyTurn();
+
+        tt.text = "Turn: " + UpdateData.Instance.GData.Game.CurrentPlayer.ToString();
+        rt.text = "Roll: " + UpdateData.Instance.GData.Game.Roll;
         
         for(int i = 0; i < pData.Count(); i++)
         {
@@ -120,7 +155,19 @@ public class UpdateBoard : MonoBehaviour
                 pieces[i].pieceObject.transform.position = fields[pData[i].FieldQuadrant][pData[i].FieldID].field.transform.position;
             }
         }
-        //if(UpdateData.Instance.GData.Game.CurrentPlayer != localPlayer.)
+        
+    }
+
+    public void checkMyTurn() {
+        if((PieceColor)UpdateData.Instance.PlayerIndex == UpdateData.Instance.GData.Game.CurrentPlayer)
+        {
+            setRollButton(true);
+        }
+        else
+        {
+            setRollButton(false);
+        }
+        
     }
 
     public void LoadGameObjects()
@@ -134,6 +181,22 @@ public class UpdateBoard : MonoBehaviour
         rollButton = GameObject.Find("Roll").GetComponent<Button>();
     }
 
+    public void setRollButton(bool b)
+    {
+        LoadGameObjects();
+        rollButton.enabled = b;
+        rollButton.interactable = b;
+    }
+    public void disablePieceButtons()
+    {
+        foreach (Button b in buttonPiece)
+        {
+            b.GetComponent<Image>().color = new Color32(255, 255, 255, 0);
+            b.enabled = false;
+            b.interactable = false;
+        }
+    }
+
     public async void OnRollClick()
     {
         //UpdateDeadPieces();
@@ -141,7 +204,7 @@ public class UpdateBoard : MonoBehaviour
 
         LoadGameObjects();
         roll = Dice.Instance.roll();
-        legalMoves = 0;
+        UpdateData.Instance.LegalMoves = 0;
         Debug.Log("Roll: " + roll);
         rt.text = "Roll: " + roll;
         currPlayerPiece.Clear();
@@ -170,12 +233,11 @@ public class UpdateBoard : MonoBehaviour
             {
                 Debug.Log("Moveable piece: " + currPlayerPiece[it].PieceColor + " " + it);
                 Debug.Log("Moveable piece (Playercolor): " + UpdateData.Instance.GData.Game.CurrentPlayer);
-                legalMoves++;
+                UpdateData.Instance.LegalMoves++;
                 b.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
                 b.enabled = true;
                 b.interactable = true;
-                rollButton.enabled = false;
-                rollButton.interactable = false;
+                setRollButton(false);
             }
             else
             {
@@ -185,10 +247,10 @@ public class UpdateBoard : MonoBehaviour
             }
             it++;
         }
-        if (legalMoves <= 0)
+        if (UpdateData.Instance.LegalMoves <= 0)
         {
             //Send choice to server with roll and legalMoves;
-            await TakeTurn(roll, legalMoves, 0);
+            await TakeTurn(roll, UpdateData.Instance.LegalMoves, 0);
         }
 
     }
@@ -213,15 +275,9 @@ public class UpdateBoard : MonoBehaviour
                 currPlayerPiece[p].IsInPlay = true;
             }
         }
-        foreach (Button b in buttonPiece)
-        {
-            b.GetComponent<Image>().color = new Color32(255, 255, 255, 0);
-            b.enabled = false;
-            b.interactable = false;
-        }
-        rollButton.enabled = true;
-        rollButton.interactable = true;
-        await TakeTurn(roll, legalMoves, p);
+        disablePieceButtons();
+        setRollButton(true);
+        await TakeTurn(roll, UpdateData.Instance.LegalMoves, p);
 
 
     }
