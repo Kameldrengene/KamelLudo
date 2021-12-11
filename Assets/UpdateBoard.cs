@@ -26,7 +26,7 @@ public class UpdateBoard : MonoBehaviour
     private TextMesh tt;
     private TextMesh rt;
     private TextMesh gt;
-    private GameData latestGame;
+    private List<PieceData> pData;
 
 
     // Start is called before the first frame update
@@ -37,13 +37,14 @@ public class UpdateBoard : MonoBehaviour
         {
             Debug.Log("Board hello: From Board data caller");
             Debug.Log("Board data test: " + game.Game.IsWon);
-            List<PieceData> pData = JsonSerializer.Deserialize<List<PieceData>>(game.Game.Pieces);
+            pData = JsonSerializer.Deserialize<List<PieceData>>(game.Game.Pieces);
             Debug.Log("pData size: " + pData.Count());
+            UpdateData.Instance.PData = pData;
+            UpdateData.Instance.GData = game;
             Debug.Log("Board Game Roll: " + game.Game.Roll);
             Debug.Log("Board player: " + game.Game.CurrentPlayer);
             Debug.Log("Piece: " + game.Game.Pieces);
             updateGame(game);
-            latestGame = game;
             Debug.Log("Board exist: "+game.Game);
             
 
@@ -53,6 +54,18 @@ public class UpdateBoard : MonoBehaviour
         {
             Debug.Log("Game name: " + game.GameName);
             Debug.Log("Game ID: " + game.Id);
+            Debug.Log("Game Participants: " + game.Participants.Count());
+            Debug.Log("Game Leader: " + game.Leader.Name);
+            //Add players to one list
+            UpdateData.Instance.Players.Add(game.Leader);
+            for(int i = 0; i < game.Participants.Count();i++)
+            {
+                UpdateData.Instance.Players.Add(game.Participants[i]);
+            }
+            foreach(Player p in UpdateData.Instance.Players)
+            {
+                Debug.Log("Players: " + p.Name);
+            }
             gt.text = "Game: " + game.GameName;
 
 
@@ -87,22 +100,27 @@ public class UpdateBoard : MonoBehaviour
     {
         tt.text = "Turn: " + game.Game.CurrentPlayer.ToString();
         rt.text = "Roll: " + game.Game.Roll;
-        for(int i = 0; i < game.Game.Pieces.Count(); i++)
+        
+        for(int i = 0; i < pData.Count(); i++)
         {
-
+            /*pData[0].IsInPlay = true;
+            pData[0].FieldID = 1;
+            pData[0].FieldQuadrant = 1;*/
+            Debug.Log("pData piececolor: " + pData[0].PieceColor);
             //If Piece is not in play and is not done
-            /*if (!game.Game.Pieces[i].IsInPlay && !game.Game.Pieces[i].IsDone)
+            if (!pData[i].IsInPlay && !pData[i].IsDone)
             {
                 pieces[i].pieceObject.transform.position = oldLocation[i]; //Set to home position
-            } else if(game.Game.Pieces[i].IsDone) //If piece is done, remove it
+            } else if(pData[i].IsDone) //If piece is done, remove it
             {
                 pieces[i].pieceObject.SetActive(false);
             }
-            else if(game.Game.Pieces[i].IsInPlay) //If piece is in play, then set to fieldID
+            else if(pData[i].IsInPlay) //If piece is in play, then set to fieldID
             {
-                pieces[i].pieceObject.transform.position = fields[game.Game.Pieces[i].FieldQuadrant][game.Game.Pieces[i].FieldID].field.transform.position;
-            }*/
+                pieces[i].pieceObject.transform.position = fields[pData[i].FieldQuadrant][pData[i].FieldID].field.transform.position;
+            }
         }
+        //if(UpdateData.Instance.GData.Game.CurrentPlayer != localPlayer.)
     }
 
     public void LoadGameObjects()
@@ -127,12 +145,15 @@ public class UpdateBoard : MonoBehaviour
         Debug.Log("Roll: " + roll);
         rt.text = "Roll: " + roll;
         currPlayerPiece.Clear();
+        Debug.Log("UpdateData pData: " + UpdateData.Instance.PData.Count());
+        Debug.Log("UpdateData gData: " + UpdateData.Instance.GData.GameName);
         //TODO: Get player color instead of piececolor blue <-----
-        /*(PieceData p in latestGame.Game.Pieces)
+        foreach(PieceData p in UpdateData.Instance.PData)
         {
-            if(p.PieceColor == PieceColor.blue)
+            if(p.PieceColor == UpdateData.Instance.GData.Game.CurrentPlayer)
             {
                 currPlayerPiece.Add(p);
+                Debug.Log("Piece added: " + p.PieceColor);
             }
         }
         buttonPiece.Clear();
@@ -145,8 +166,10 @@ public class UpdateBoard : MonoBehaviour
         foreach(Button b in buttonPiece)
         {
             
-            if (currPlayerPiece[it].isMoveable(roll))
+            if (currPlayerPiece[it].isMoveable(roll) && currPlayerPiece[it].PieceColor == UpdateData.Instance.GData.Game.CurrentPlayer)
             {
+                Debug.Log("Moveable piece: " + currPlayerPiece[it].PieceColor + " " + it);
+                Debug.Log("Moveable piece (Playercolor): " + UpdateData.Instance.GData.Game.CurrentPlayer);
                 legalMoves++;
                 b.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
                 b.enabled = true;
@@ -161,7 +184,7 @@ public class UpdateBoard : MonoBehaviour
                 b.interactable = false;
             }
             it++;
-        }*/
+        }
         if (legalMoves <= 0)
         {
             //Send choice to server with roll and legalMoves;
