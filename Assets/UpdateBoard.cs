@@ -213,7 +213,7 @@ public class UpdateBoard : MonoBehaviour
         //UpdatePiecesPosition();
 
         LoadGameObjects();
-        roll = Dice.Instance.roll();
+        roll = CheatDice.Instance.roll();
         UpdateData.Instance.LegalMoves = 0;
         Debug.Log("Roll: " + roll);
         rt.text = "Roll: " + roll;
@@ -238,10 +238,20 @@ public class UpdateBoard : MonoBehaviour
         int it = 0;
         foreach(Button b in buttonPiece)
         {
-            
-            if (currPlayerPiece[it].isMoveable(roll) && currPlayerPiece[it].PieceColor == UpdateData.Instance.GData.Game.CurrentPlayer)
+            //Finding correct PieceData
+            PieceData pd = currPlayerPiece[0];
+            foreach(PieceData pd_tmp in currPlayerPiece)
             {
-                Debug.Log("Moveable piece: " + currPlayerPiece[it].PieceColor + " " + it);
+                if (pd_tmp.PieceID == it+1)
+                {
+                    pd = pd_tmp;
+                    break;
+                }
+            }
+
+            if (pd.isMoveable(roll) && pd.PieceColor == UpdateData.Instance.GData.Game.CurrentPlayer)
+            {
+                Debug.Log("Moveable piece: " + pd.PieceColor + " " + pd.PieceID);
                 Debug.Log("Moveable piece (Playercolor): " + UpdateData.Instance.GData.Game.CurrentPlayer);
                 UpdateData.Instance.LegalMoves++;
                 b.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
