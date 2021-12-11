@@ -138,21 +138,31 @@ public class UpdateBoard : MonoBehaviour
         
         for(int i = 0; i < pData.Count(); i++)
         {
+            PieceData pd = pData[0];
+            foreach(PieceData tmp_pd in pData)
+            {
+                if ((PieceColor)tmp_pd.PieceColor == pieces[i].getPieceColor() &&
+                    tmp_pd.PieceID == pieces[i].pieceID)
+                {
+                    pd = tmp_pd;
+                    break;
+                }
+            }
+
             /*pData[0].IsInPlay = true;
             pData[0].FieldID = 1;
             pData[0].FieldQuadrant = 1;*/
-            Debug.Log("pData piececolor: " + pData[0].PieceColor);
             //If Piece is not in play and is not done
-            if (!pData[i].IsInPlay && !pData[i].IsDone)
+            if (!pd.IsInPlay && !pd.IsDone)
             {
                 pieces[i].pieceObject.transform.position = oldLocation[i]; //Set to home position
-            } else if(pData[i].IsDone) //If piece is done, remove it
+            } else if(pd.IsDone) //If piece is done, remove it
             {
                 pieces[i].pieceObject.SetActive(false);
             }
-            else if(pData[i].IsInPlay) //If piece is in play, then set to fieldID
+            else if(pd.IsInPlay) //If piece is in play, then set to fieldID
             {
-                pieces[i].pieceObject.transform.position = fields[pData[i].FieldQuadrant][pData[i].FieldID].field.transform.position;
+                pieces[i].pieceObject.transform.position = fields[pd.FieldQuadrant][pd.FieldID].field.transform.position;
             }
         }
         
