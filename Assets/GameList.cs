@@ -18,8 +18,7 @@ public class GameList : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (SignalR.Instance.Connected)
-        {
+       
             SignalR.Instance.Connection.On<List<GameData>>("ReceiveLobbies", (lobbies) =>
         {
             Debug.Log("im here");
@@ -113,7 +112,7 @@ public class GameList : MonoBehaviour
                     }
                 }
             });
-        }
+        
 
         ArrayList arlist = new ArrayList()
                         {
