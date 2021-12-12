@@ -13,6 +13,7 @@ public class SignalR : MonoBehaviour
     private static string _token = null;
     private static string _connectionString = "http://localhost:5000";
     private static string _gameId = null;
+    private List<GameObject> _windows = new List<GameObject>();
 
     SignalR() { _connected = false; }
 
@@ -30,11 +31,27 @@ public class SignalR : MonoBehaviour
         _connection.On<string>("Connected", (connetionid) =>
          {
              Debug.Log(connetionid);
+             Ping();
 
          });
 
 
         Connect();
+    }
+
+    public async void Ping()
+    {
+        _connection.On("Ping", () =>
+        {
+            Debug.Log("server pinged");
+        });
+
+        while (true)
+        {
+            await Task.Delay(UnityEngine.Random.Range(1,3) * 10000);
+            await _connection.InvokeAsync("Ping");
+        }
+        
     }
 
     public async void Connect()
@@ -51,6 +68,14 @@ public class SignalR : MonoBehaviour
         }
        
     }
+
+    public void subscribe(GameObject window)
+    {
+        _windows.Add(window);
+        Debug.Log(window.name + "added");
+    }
+
+
 
     public static string Token
     {
