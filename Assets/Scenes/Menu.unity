@@ -395,7 +395,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 218181802}
         m_TargetAssemblyTypeName: LaunchOwnMenu, Assembly-CSharp
-        m_MethodName: launchGame
+        m_MethodName: launchGameOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

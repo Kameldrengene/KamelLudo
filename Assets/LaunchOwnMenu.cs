@@ -22,14 +22,12 @@ public class LaunchOwnMenu : MonoBehaviour
     void Start()
     {
       
-
-        if (SignalRGame.Connected)
-        {
-            SignalRGame.Connection.On<GameData>("LaunchGame", (game) =>
-             {
-                 launchGame();
-             });
-        }
+       SignalRGame.Connection.On<GameData>("LaunchGame", (game) =>
+       {
+           Debug.Log("in Launchgame");
+            launchGame();
+        });
+        
         
         if (SignalR.Connected)
         {
