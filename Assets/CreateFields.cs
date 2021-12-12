@@ -9,8 +9,20 @@ public class CreateFields : MonoBehaviour
     private float defaultX = -2.2f;
     private float defaultY = 4.33f;
     private float defaultZ = -0.52f;
-    private List<Field>[] fieldList = { new List<Field>(), new List<Field>(), new List<Field>() , new List<Field>() };
-    private List<Field>[] dasdasd;
+    private List<Field>[] fieldList = Board.fieldList;
+    private static CreateFields instance;
+
+    public static CreateFields Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new CreateFields();
+            }
+            return instance;
+        }
+    }
 
     public Field getStart(PieceColor pieceColor)
     {
@@ -49,7 +61,7 @@ public class CreateFields : MonoBehaviour
             // Change the next update (current second+1)
             //nextUpdate = Mathf.FloorToInt(Time.time) + 1;
             // Call your fonction
-       AnimatedMove();
+      // AnimatedMove();
 
         //}
 
@@ -121,32 +133,34 @@ public class CreateFields : MonoBehaviour
                     if (j == 3 && k == 0) //Globus
                     {
                         field = new GlobusField(cube);
-                        cube.GetComponent<Renderer>().material.color = new Color32(255, 0, 255, 255);
+                        cube.GetComponent<Renderer>().material.color = new Color32(255, 0, 255, 0);
+                        
                     }
                     else if (j == 4 && k == 2)//Globus and field
                     {
                         field = new SafeHomeField(cube);
-                        cube.GetComponent<Renderer>().material.color = new Color32(255, 100, 255, 255);
+                        cube.GetComponent<Renderer>().material.color = new Color32(255, 100, 255, 0);
                     }
                     else if (j == 5 && k == 1) //Entrance
                     {
                         field = new EntranceField(cube);
-                        cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 255);
+                        cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 0);
                     }
                     else if (j == 0 && k == 0) //Star
                     {
                         field = new StarField(cube);
-                        cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 255);
+                        cube.GetComponent<Renderer>().material.color = new Color32(0, 0, 255, 0);
                     }
                     else //Default
                     {
                         field = new NormalField(cube);
-                        cube.GetComponent<Renderer>().material.color = new Color32(0, 255, 0, 255);
+                        cube.GetComponent<Renderer>().material.color = new Color32(0, 255, 0, 0);
                     }
+                    cube.GetComponent<Renderer>().enabled = false;
                     fieldList[i].Add(field);
                 }
             }            
         }
-        AssignNextFields();
+        //AssignNextFields();
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -10,29 +9,35 @@ public class CreatePieces : MonoBehaviour
     private float defaultZ = -1.29f;
     private float midStartY = 9.77f;
     public List<Piece> pieces = Board.pieces;
+    public List<Vector3> locations= Board.locations;
     // Start is called before the first frame update
     void Start()
     {
         MakePieces();
+
     }
+
 
     // Update is called once per frame
 
 
     void Update()
     {
-        
+
     }
+
+    
 
     private void MakePieces()
     {
-        float angle = 1.6f; //Why is 1.6f 90 ish degrees??????????????????????????
+        float angle = 1.5708f; //1.5708 radians almost equals 90 degrees
         for(int j = 0; j < 4; j++)
         {
             float[] pos = { (float)(-Math.Sin(angle*j)*(defaultY-midStartY)+defaultX), (float)(Math.Cos(angle * j) * (defaultY - midStartY) + defaultX), defaultZ };
             for (int i = 0; i < 4; i++)
             {
                 GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                cylinder.GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
                 Vector3 newPos = new Vector3(pos[0],pos[1], pos[2]);
                 cylinder.transform.rotation = new Quaternion(90f, 0f, 0f, 90f);
                 Piece newPiece = null;
@@ -41,7 +46,7 @@ public class CreatePieces : MonoBehaviour
                     newPos = new Vector3(pos[1], -pos[0], pos[2]);
                     cylinder.transform.position = newPos;
                     cylinder.GetComponent<Renderer>().material.color = Color.blue;
-                    newPiece = new BluePiece(cylinder);
+                    newPiece = new BluePiece(cylinder, j+1);
 
                 }
                 else if (i == 1) //Yellow
@@ -49,7 +54,7 @@ public class CreatePieces : MonoBehaviour
                     newPos = new Vector3(-pos[0], -pos[1], pos[2]);
                     cylinder.transform.position = newPos;
                     cylinder.GetComponent<Renderer>().material.color = Color.yellow;
-                    newPiece = new YellowPiece(cylinder);
+                    newPiece = new YellowPiece(cylinder, j + 1);
 
                 }
                 else if (i == 2) //Green
@@ -57,7 +62,7 @@ public class CreatePieces : MonoBehaviour
                     newPos = new Vector3(-pos[1], pos[0], pos[2]);
                     cylinder.transform.position = newPos;
                     cylinder.GetComponent<Renderer>().material.color = Color.green;
-                    newPiece = new GreenPiece(cylinder);
+                    newPiece = new GreenPiece(cylinder, j + 1);
 
                 }
                 else //Red
@@ -65,11 +70,18 @@ public class CreatePieces : MonoBehaviour
                     newPos = new Vector3(pos[0],pos[1], pos[2]);
                     cylinder.transform.position = newPos;
                     cylinder.GetComponent<Renderer>().material.color = Color.red;
-                    newPiece = new RedPiece(cylinder);
+                    newPiece = new RedPiece(cylinder, j + 1);
 
                 }
+                GameObject text = new GameObject();
+                TextMesh t = text.AddComponent<TextMesh>();
+                t.text = newPiece.pieceID+"";
+                t.fontSize = 15;
+                text.GetComponent<Renderer>().material.color = Color.black;
+                text.transform.position = new Vector3(newPos[0]-1.5f+(float)j*(float)0.6,newPos[1],newPos[2]+1f);
+                text.transform.parent = cylinder.transform;
                 pieces.Add(newPiece);
-
+                locations.Add(newPiece.pieceObject.transform.position);
             }
         }
         
