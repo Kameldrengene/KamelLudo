@@ -37,6 +37,7 @@ public class CreatePieces : MonoBehaviour
             for (int i = 0; i < 4; i++)
             {
                 GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                cylinder.GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
                 Vector3 newPos = new Vector3(pos[0],pos[1], pos[2]);
                 cylinder.transform.rotation = new Quaternion(90f, 0f, 0f, 90f);
                 Piece newPiece = null;
