@@ -21,9 +21,9 @@ public class ListLobbies : MonoBehaviour
 
     public async void getLobbies()
     {
-        if (SignalR.Instance.Connected)
+        if (SignalR.Connected)
         {
-            await SignalR.Instance.Connection.InvokeAsync("getBareLobbies");
+            await SignalR.Connection.InvokeAsync("getBareLobbies");
             Debug.Log("In Invoke Lobbies");
         }
         else

@@ -20,13 +20,14 @@ public class Options : MonoBehaviour
         {
             ip = "http://localhost:5000";
         }
-        /*
+        
         if(!(ip.Contains("http://") || ip.Contains("https://")))
         {
-            ip = "http://" + ip;
+            SignalR.ConnectionString = "http://" + ip;
+            SignalRGame.Instance.ConnectionString = "http://" + ip;
         }
-        */
-        SignalR.Instance.ConnectionString = ip;
+        
+        SignalR.ConnectionString = ip;
         SignalRGame.Instance.ConnectionString = ip;
      
     }

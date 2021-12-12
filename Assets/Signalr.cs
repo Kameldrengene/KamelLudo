@@ -5,33 +5,19 @@ using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
 using System;
 
-public class SignalR
+public class SignalR : MonoBehaviour
 {
     private static readonly object servicelock = new object();
-    private static SignalR instance = null;
-    private HubConnection _connection;
-    private bool _connected;
-    private string _token = null;
-    private string _connectionString = "http://localhost:5000";
-    private string _gameId = null;
+    private static HubConnection _connection;
+    private static bool _connected;
+    private static string _token = null;
+    private static string _connectionString = "http://localhost:5000";
+    private static string _gameId = null;
+    private List<GameObject> _windows = new List<GameObject>();
 
     SignalR() { _connected = false; }
 
-    public static SignalR Instance
-    {
-        get
-        {
-            lock (servicelock)
-            {
-                if (instance == null)
-                {
-                    instance = new SignalR();
-                }
-                return instance;
-            }
-        }
-    }
-    public HubConnection Connection
+    public static HubConnection Connection
     {
         get { return _connection; }
         set { _connection = value; }
@@ -41,18 +27,31 @@ public class SignalR
         Debug.Log(ConnectionString);
        
         _connection = new HubConnectionBuilder().WithUrl(ConnectionString + "/lobbyHub").WithAutomaticReconnect().Build();
-        //_connection.Closed += async (error) =>
-        //{
-        //    await Task.Delay(1000);
-        //    await _connection.StartAsync();
-        //};
-
+  
         _connection.On<string>("Connected", (connetionid) =>
          {
              Debug.Log(connetionid);
+             Ping();
 
          });
+
+
         Connect();
+    }
+
+    public async void Ping()
+    {
+        _connection.On("Ping", () =>
+        {
+            Debug.Log("server pinged");
+        });
+
+        while (true)
+        {
+            await Task.Delay(UnityEngine.Random.Range(1,3) * 10000);
+            await _connection.InvokeAsync("Ping");
+        }
+        
     }
 
     public async void Connect()
@@ -68,30 +67,36 @@ public class SignalR
             Debug.Log(ex.Message);
         }
        
-
-
     }
 
-    public string Token
+    public void subscribe(GameObject window)
     {
-        get { return this._token; }
-        set { this._token = value; }
+        _windows.Add(window);
+        Debug.Log(window.name + "added");
     }
 
-    public bool Connected
+
+
+    public static string Token
     {
-        get { return this._connected; }
-        set { this._connected = value; }
+        get { return _token; }
+        set { _token = value; }
     }
 
-    public string ConnectionString
+    public static bool Connected
     {
-        get { return this._connectionString; }
-        set { this._connectionString = value; }
+        get { return _connected; }
+        set { _connected = value; }
     }
-    public string GameId
+
+    public static string ConnectionString
     {
-        get { return this._gameId; }
-        set { this._gameId = value; }
+        get { return _connectionString; }
+        set { _connectionString = value; }
+    }
+    public static string GameId
+    {
+        get { return _gameId; }
+        set { _gameId = value; }
     }
 }

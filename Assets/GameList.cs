@@ -18,9 +18,9 @@ public class GameList : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (SignalR.Instance.Connected)
+        if (SignalR.Connected)
         {
-            SignalR.Instance.Connection.On<List<GameData>>("ReceiveLobbies", (lobbies) =>
+            SignalR.Connection.On<List<GameData>>("ReceiveLobbies", (lobbies) =>
         {
             Debug.Log("im here");
             Debug.Log("number of " + lobbiesFromServer.Count);
@@ -57,7 +57,7 @@ public class GameList : MonoBehaviour
             }
         });
 
-            SignalR.Instance.Connection.On<GameData>("RecieveUpdatedGame", (result) =>
+            SignalR.Connection.On<GameData>("RecieveUpdatedGame", (result) =>
             {
                 Debug.Log("updated participants " + result.Participants.Count);
                 GameObject game = GameObject.Find(result.GameName);
@@ -72,7 +72,7 @@ public class GameList : MonoBehaviour
                 }
             });
 
-            SignalR.Instance.Connection.On<GameData>("ReceiveGame", (game) =>
+            SignalR.Connection.On<GameData>("ReceiveGame", (game) =>
             {
                 Debug.Log("received game");
                 GameObject lobby = Instantiate(listItemObj, lobbyListHolder);
@@ -95,7 +95,7 @@ public class GameList : MonoBehaviour
                 lobbiesFromServer.Add(game);
             });
 
-            SignalR.Instance.Connection.On<GameData>("RemoveGame", (gamedata) =>
+            SignalR.Connection.On<GameData>("RemoveGame", (gamedata) =>
             {
                 Debug.Log("remove game " + gamedata.GameName);
 
@@ -136,9 +136,9 @@ public class GameList : MonoBehaviour
 
     public async Task InvokeLobbiesAsync()
     {
-        if (SignalR.Instance.Connected)
+        if (SignalR.Connected)
         {
-            await SignalR.Instance.Connection.InvokeAsync("getLobbies");
+            await SignalR.Connection.InvokeAsync("getLobbies");
         }
 
     }
@@ -146,11 +146,11 @@ public class GameList : MonoBehaviour
     public async void onJoinClick(GameData gamedata)
     {
         Debug.Log("clicked name: " + gamedata.GameName + " id:" + gamedata.Id);
-        if (SignalR.Instance.Connected)
+        if (SignalR.Connected)
         {
             launchmenu.SetActive(true);
-            SignalR.Instance.GameId = gamedata.Id;
-            await SignalR.Instance.Connection.InvokeAsync("addParticipant",gamedata.Id, Self.Instance.Name);
+            SignalR.GameId = gamedata.Id;
+            await SignalR.Connection.InvokeAsync("addParticipant",gamedata.Id, Self.Instance.Name);
             await SignalRGame.Instance.Connection.InvokeAsync("AddToGroup",gamedata.Id);
             gamelist.SetActive(false);
             
