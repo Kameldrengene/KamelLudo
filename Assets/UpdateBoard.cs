@@ -22,9 +22,11 @@ public class UpdateBoard : MonoBehaviour
     private GameObject turnText;
     private GameObject rollText;
     private GameObject gameText;
+    private GameObject gameOverText;
     private TextMesh tt;
     private TextMesh rt;
     private TextMesh gt;
+    private TextMesh got;
     private List<PieceData> pData;
 
 
@@ -32,6 +34,7 @@ public class UpdateBoard : MonoBehaviour
     async void Start()
     {
         LoadGameObjects();
+        gameOverText.GetComponent<Renderer>().enabled = false;
         SignalRGame.Instance.Connection.On<GameData>("UpdateGame", (game) =>
         {
             Debug.Log("Board hello: From Board data caller");
@@ -132,27 +135,38 @@ public class UpdateBoard : MonoBehaviour
     private void updateGame()
     {
         checkMyTurn();
+        gameOverText.GetComponent<Renderer>().enabled = UpdateData.Instance.GData.Game.IsWon;
 
         tt.text = "Turn: " + UpdateData.Instance.GData.Game.CurrentPlayer.ToString();
         rt.text = "Roll: " + UpdateData.Instance.GData.Game.Roll;
         
         for(int i = 0; i < pData.Count(); i++)
         {
+            PieceData pd = pData[0];
+            foreach(PieceData tmp_pd in pData)
+            {
+                if ((PieceColor)tmp_pd.PieceColor == pieces[i].getPieceColor() &&
+                    tmp_pd.PieceID == pieces[i].pieceID)
+                {
+                    pd = tmp_pd;
+                    break;
+                }
+            }
+
             /*pData[0].IsInPlay = true;
             pData[0].FieldID = 1;
             pData[0].FieldQuadrant = 1;*/
-            Debug.Log("pData piececolor: " + pData[0].PieceColor);
             //If Piece is not in play and is not done
-            if (!pData[i].IsInPlay && !pData[i].IsDone)
+            if (!pd.IsInPlay && !pd.IsDone)
             {
                 pieces[i].pieceObject.transform.position = oldLocation[i]; //Set to home position
-            } else if(pData[i].IsDone) //If piece is done, remove it
+            } else if(pd.IsDone) //If piece is done, remove it
             {
                 pieces[i].pieceObject.SetActive(false);
             }
-            else if(pData[i].IsInPlay) //If piece is in play, then set to fieldID
+            else if(pd.IsInPlay) //If piece is in play, then set to fieldID
             {
-                pieces[i].pieceObject.transform.position = fields[pData[i].FieldQuadrant][pData[i].FieldID].field.transform.position;
+                pieces[i].pieceObject.transform.position = fields[pd.FieldQuadrant][pd.FieldID].field.transform.position;
             }
         }
         
@@ -178,6 +192,8 @@ public class UpdateBoard : MonoBehaviour
         rt = rollText.GetComponent<TextMesh>();
         gameText = GameObject.Find("gameText");
         gt = gameText.GetComponent<TextMesh>();
+        gameOverText = GameObject.Find("gameOverText");
+        got = gameOverText.GetComponent<TextMesh>();
         rollButton = GameObject.Find("Roll").GetComponent<Button>();
     }
 
@@ -203,7 +219,7 @@ public class UpdateBoard : MonoBehaviour
         //UpdatePiecesPosition();
 
         LoadGameObjects();
-        roll = Dice.Instance.roll();
+        roll = CheatDice.Instance.roll();
         UpdateData.Instance.LegalMoves = 0;
         Debug.Log("Roll: " + roll);
         rt.text = "Roll: " + roll;
@@ -228,10 +244,20 @@ public class UpdateBoard : MonoBehaviour
         int it = 0;
         foreach(Button b in buttonPiece)
         {
-            
-            if (currPlayerPiece[it].isMoveable(roll) && currPlayerPiece[it].PieceColor == UpdateData.Instance.GData.Game.CurrentPlayer)
+            //Finding correct PieceData
+            PieceData pd = currPlayerPiece[0];
+            foreach(PieceData pd_tmp in currPlayerPiece)
             {
-                Debug.Log("Moveable piece: " + currPlayerPiece[it].PieceColor + " " + it);
+                if (pd_tmp.PieceID == it+1)
+                {
+                    pd = pd_tmp;
+                    break;
+                }
+            }
+
+            if (pd.isMoveable(roll) && pd.PieceColor == UpdateData.Instance.GData.Game.CurrentPlayer)
+            {
+                Debug.Log("Moveable piece: " + pd.PieceColor + " " + pd.PieceID);
                 Debug.Log("Moveable piece (Playercolor): " + UpdateData.Instance.GData.Game.CurrentPlayer);
                 UpdateData.Instance.LegalMoves++;
                 b.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
