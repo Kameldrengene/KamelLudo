@@ -23,9 +23,9 @@ public class LaunchOwnMenu : MonoBehaviour
     {
       
 
-        if (SignalRGame.Instance.Connected)
+        if (SignalRGame.Connected)
         {
-            SignalRGame.Instance.Connection.On<GameData>("LaunchGame", (game) =>
+            SignalRGame.Connection.On<GameData>("LaunchGame", (game) =>
              {
                  launchGame();
              });
@@ -75,7 +75,7 @@ public class LaunchOwnMenu : MonoBehaviour
                 this.gameId = game.Id;
                 this.gameData = game;
                 this.playerList.text = "";
-                await SignalRGame.Instance.Connection.InvokeAsync("AddToGroup", game.Id);
+                await SignalRGame.Connection.InvokeAsync("AddToGroup", game.Id);
 
             });
 
@@ -95,13 +95,13 @@ public class LaunchOwnMenu : MonoBehaviour
     public async void launchGameOnClick()
     {
        
-        await SignalRGame.Instance.Connection.InvokeAsync("LaunchGame",gameId);
+        await SignalRGame.Connection.InvokeAsync("LaunchGame",gameId);
 
     }
 
     public void launchGame()
     {
-        SignalRGame.Instance.Gameid = gameId;
+        SignalRGame.Gameid = gameId;
 
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

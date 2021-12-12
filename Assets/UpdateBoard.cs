@@ -35,7 +35,7 @@ public class UpdateBoard : MonoBehaviour
     {
         LoadGameObjects();
         gameOverText.GetComponent<Renderer>().enabled = false;
-        SignalRGame.Instance.Connection.On<GameData>("UpdateGame", (game) =>
+        SignalRGame.Connection.On<GameData>("UpdateGame", (game) =>
         {
             Debug.Log("Board hello: From Board data caller");
             Debug.Log("Board data test: " + game.Game.IsWon);
@@ -53,7 +53,7 @@ public class UpdateBoard : MonoBehaviour
 
 
         });
-        SignalRGame.Instance.Connection.On<GameData>("GetGame", (game) =>
+        SignalRGame.Connection.On<GameData>("GetGame", (game) =>
         {
             Debug.Log("Game name: " + game.GameName);
             Debug.Log("Game ID: " + game.Id);
@@ -79,12 +79,12 @@ public class UpdateBoard : MonoBehaviour
 
 
         });
-        await SignalRGame.Instance.Connection.InvokeAsync("GetGame", SignalRGame.Instance.Gameid);
+        await SignalRGame.Connection.InvokeAsync("GetGame", SignalRGame.Gameid);
         
-        await SignalRGame.Instance.Connection.InvokeAsync("UpdateGame", SignalRGame.Instance.Gameid, "0", "0","0"); //ID, Roll, LegalMoves, PieceID
-        Debug.Log(SignalRGame.Instance.Gameid);
+        await SignalRGame.Connection.InvokeAsync("UpdateGame", SignalRGame.Gameid, "0", "0","0"); //ID, Roll, LegalMoves, PieceID
+        Debug.Log(SignalRGame.Gameid);
         Debug.Log("START LOADED!!!!");
-        Debug.Log("SignalR Game Connected: " + SignalRGame.Instance.Connected);
+        Debug.Log("SignalR Game Connected: " + SignalRGame.Connected);
         Debug.Log("Game loaded");
     }
 
@@ -284,7 +284,7 @@ public class UpdateBoard : MonoBehaviour
     private async Task TakeTurn(int r, int lm, int pid)
     {
 
-        await SignalRGame.Instance.Connection.InvokeAsync("UpdateGame", SignalRGame.Instance.Gameid, r.ToString(), lm.ToString(), pid.ToString());
+        await SignalRGame.Connection.InvokeAsync("UpdateGame", SignalRGame.Gameid, r.ToString(), lm.ToString(), pid.ToString());
 
     }
 

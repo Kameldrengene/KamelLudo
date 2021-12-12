@@ -151,7 +151,7 @@ public class GameList : MonoBehaviour
             launchmenu.SetActive(true);
             SignalR.GameId = gamedata.Id;
             await SignalR.Connection.InvokeAsync("addParticipant",gamedata.Id, Self.Instance.Name);
-            await SignalRGame.Instance.Connection.InvokeAsync("AddToGroup",gamedata.Id);
+            await SignalRGame.Connection.InvokeAsync("AddToGroup",gamedata.Id);
             gamelist.SetActive(false);
             
 

@@ -7,7 +7,6 @@ using System;
 
 public class SignalR : MonoBehaviour
 {
-    private static readonly object servicelock = new object();
     private static HubConnection _connection;
     private static bool _connected;
     private static string _token = null;

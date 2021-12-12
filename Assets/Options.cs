@@ -24,11 +24,11 @@ public class Options : MonoBehaviour
         if(!(ip.Contains("http://") || ip.Contains("https://")))
         {
             SignalR.ConnectionString = "http://" + ip;
-            SignalRGame.Instance.ConnectionString = "http://" + ip;
+            SignalRGame.ConnectionString = "http://" + ip;
         }
         
         SignalR.ConnectionString = ip;
-        SignalRGame.Instance.ConnectionString = ip;
+        SignalRGame.ConnectionString = ip;
      
     }
 

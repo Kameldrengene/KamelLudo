@@ -8,31 +8,16 @@ using UnityEngine;
 public class SignalRGame : MonoBehaviour
 {
     // Start is called before the first frame update
-    private static readonly object servicelock = new object();
-    private static SignalRGame instance = null;
-    private HubConnection _connection;
-    private bool _connected;
-    private string _token = null;
-    private string _connectionString = "http://localhost:5000";
-    private string _gameid = null;
+    private static HubConnection _connection;
+    private static bool _connected;
+    private static string _token = null;
+    private static string _connectionString = "http://localhost:5000";
+    private static string _gameid = null;
 
     SignalRGame() { _connected = false; }
 
-    public static SignalRGame Instance
-    {
-        get
-        {
-            lock (servicelock)
-            {
-                if (instance == null)
-                {
-                    instance = new SignalRGame();
-                }
-                return instance;
-            }
-        }
-    }
-    public HubConnection Connection
+
+    public static HubConnection Connection
     {
         get { return _connection; }
         private set { _connection = value; }
@@ -56,7 +41,7 @@ public class SignalRGame : MonoBehaviour
         catch (System.Exception ex)
         {
             Debug.Log(ex);
-            this.Connected = false;
+            Connected = false;
         }
     }
 
@@ -91,26 +76,26 @@ public class SignalRGame : MonoBehaviour
 
     }
 
-    public string Token
+    public static string Token
     {
-        get { return this._token; }
-        set { this._token = value; }
+        get { return _token; }
+        set { _token = value; }
     }
 
-    public bool Connected
+    public static bool Connected
     {
-        get { return this._connected; }
-        set { this._connected = value; }
+        get { return _connected; }
+        set { _connected = value; }
     }
 
-    public string ConnectionString
+    public static string ConnectionString
     {
-        get { return this._connectionString; }
-        set { this._connectionString = value; }
+        get { return _connectionString; }
+        set { _connectionString = value; }
     }
-    public string Gameid
+    public static string Gameid
     {
-        get { return this._gameid; }
-        set { this._gameid = value; }
+        get { return _gameid; }
+        set { _gameid = value; }
     }
 }
